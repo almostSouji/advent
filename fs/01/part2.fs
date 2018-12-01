@@ -4,13 +4,11 @@ let input = System.IO.File.ReadLines("./input.txt")
             |> Seq.toList
             |> List.map int
 
-let rec solve (list :int List) (values :int List) (b :int) :int =
-    // printfn "%A" (List.head values);
+let rec solve (list :int List) (values :int Set) (cFrequency :int) :int =
     match list with
-    | [] -> printfn "%A" b;
-            solve (input) (values) (b+1)
-    | x::xs -> let y = x + List.head values in 
-                if List.contains y values then y else solve (xs) (y :: values) (b)
+    | [] -> solve (input) (values) (cFrequency)
+    | x::xs -> let y = x + cFrequency in 
+                if Set.contains y values then y else solve (xs) (Set.add y values) (y)
 
-solve input [0] 0
+solve input (Set.add 0 Set.empty) 0
 |> printfn "%A"
