@@ -1,20 +1,19 @@
 const fs = require('fs');
-const input = fs.readFileSync('./input.md', 'utf-8');
+const input = fs.readFileSync('./input.txt', 'utf-8');
 const arr = input.split('\n');
-let iter = 0;
 const numArray = arr.map(e => parseInt(e, 10));
 let found = false;
-const frequencies = [];
+const frequencies = new Set();
 let it = 0;
+
 while (!found) {
-	iter++;
 	for (const e of numArray) {
 		it += e;
-		if (frequencies.includes(it)) {
+		if (frequencies.has(it)) {
 			found = true;
-			return console.log(it, iter);
+			return console.log(it);
 		}
-		frequencies.push(it);
+		frequencies.add(it);
 	}
 }
 

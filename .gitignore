@@ -1,7 +1,4 @@
 node_modules
-.vscode
-build*
-paket.*
+bin
 obj
-*paket*
-packages
+*.dll
