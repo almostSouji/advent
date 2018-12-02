@@ -21,4 +21,6 @@ for (const element of arr) {
 	if (hasThree) three++;
 }
 
+console.log(`Twos: ${two}`);
+console.log(`Threes: ${three}`);
 console.log(`Checksum: ${two * three}`);
