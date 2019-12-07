@@ -12,3 +12,5 @@ U = nx.Graph(G)
 for you_orbit in U.neighbors("YOU"):
 	for san_orbit in U.neighbors("SAN"):
 		print("Part 2: Orbital transfers required: {}".format(nx.shortest_path_length(U, you_orbit, san_orbit)))
+
+nx.write_graphml(G, "orbitmap.graphml");
