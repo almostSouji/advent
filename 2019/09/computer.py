@@ -85,7 +85,7 @@ OP-Codes:
 	8 EQ parameter3^ <- 1 if parameter1 == parameter2 else 0
 	9 BSE base <- base + parameter1
 	99 HLT stop execution
-	^ parameters needs to be provided with mode 0 or 2
+	^ parameter needs to be provided with mode 0 or 2
 """
 
 def compute(prg: List[int], inp: List[int] = [], pnt: int = 0, bse: int = 0, last_val: int = 0, last_op: int = 0):
