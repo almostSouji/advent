@@ -1,11 +1,12 @@
 from typing import Tuple, List
-import numpy
+import numpy as np
 import math
 
 ASTEROID = "#"
+LASERVECTOR = (0, -1) # pointing up
 
 with open("input.txt", "r") as file:
-	field = numpy.array(list(map(list, file.read().split("\n"))))
+	field = np.array(list(map(list, file.read().split("\n"))))
 
 dimensions = (len(field[0]),len(field))
 asteroids: List[Tuple[int, int]] = []
@@ -20,8 +21,9 @@ data = []
 # each asteroid is a potential station
 for stat in asteroids:
 	# copy of asteroid map and list
-	fld = numpy.copy(field)
+	fld = np.copy(field)
 	ats = asteroids[:]
+	classes: List[Tuple[Tuple[int, int], int]] = []
 	# mark current station on map
 	fld[stat[1]][stat[0]] = "x"
 	# while there are still uninspected astroids
@@ -44,6 +46,8 @@ for stat in asteroids:
 		coord = stat
 		# start visible at false
 		visible_found = False
+		# prepare vecor class for all subsequent coordinates
+		vectorclass = ((x_offset, y_offset) , [])
 
 		while (True):
 			# increment coordinates by offset
@@ -54,14 +58,35 @@ for stat in asteroids:
 				if fld[coord[1]][coord[0]] == "#":
 					fld[coord[1]][coord[0]] = "h" if visible_found else "v"
 					# if visible was found, set all continuous matches for this inspection to hidden
+					vectorclass[1].append(coord)
+					# add coordinate to vector class
 					visible_found = True
 			else:
+				# save vecor class
+				classes.append(vectorclass)
 				break
 	# calculate visible asteroids for this station
 	vs = len([item for sublist in fld for item in sublist if item == "v"])
 	# put new data into list
-	data.append((stat, vs))
+	data.append((stat, vs, classes))
 	
 # find max data point for visible asteroids
 m = max(data, key=lambda x: x[1])
 print("Part 1: Max. visibility {} on asteroid {}".format(m[1], m[0]))
+
+# sort list by angle to laser position
+targets = m[2]
+targets.sort(key = lambda x: np.arctan2(LASERVECTOR, x[0])[1])
+
+counter = 0
+cur = ()
+while counter < 200 and counter < len(asteroids):
+	print(counter)
+	for i in range(0, len(targets)):
+		print(cur)
+		if counter < 200 and len(targets[i][1]) > 0:
+			cur = targets[i][1].pop()
+			counter += 1
+
+print("200th asteroid to be vaporized: {}".format(cur))
+print("Part 2: Answer: {}".format(cur[0] * 100 + cur[1]))
