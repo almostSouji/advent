@@ -1,9 +1,9 @@
 from typing import Tuple, List
 import numpy as np
-import math
+import math as m
 
 ASTEROID = "#"
-LASERVECTOR = (0, -1) # pointing up
+BET_COUNT = 200
 
 with open("input.txt", "r") as file:
 	field = np.array(list(map(list, file.read().split("\n"))))
@@ -18,12 +18,19 @@ for x in range(0, dimensions[0]):
 			asteroids.append((x,y))
 data = []
 
+def rad(x, y):
+	r = m.atan2(y, x)
+	if - m.pi / 2 <= r <= m.pi:
+		return r + m.pi / 2
+	else:
+		return 5 * m.pi / 2  + r
+
 # each asteroid is a potential station
 for stat in asteroids:
 	# copy of asteroid map and list
 	fld = np.copy(field)
 	ats = asteroids[:]
-	classes: List[Tuple[Tuple[int, int], int]] = []
+	classes: List[Tuple[float, List[Tuple[int, int]]]] = []
 	# mark current station on map
 	fld[stat[1]][stat[0]] = "x"
 	# while there are still uninspected astroids
@@ -38,7 +45,7 @@ for stat in asteroids:
 		v_x = cur[0] - stat[0]
 		v_y = cur[1] - stat[1]
 		# get gcd of x and y
-		g = math.gcd(v_x, v_y)
+		g = m.gcd(v_x, v_y)
 		# calculate offset
 		x_offset = v_x // g
 		y_offset = v_y // g
@@ -47,7 +54,7 @@ for stat in asteroids:
 		# start visible at false
 		visible_found = False
 		# prepare vecor class for all subsequent coordinates
-		vectorclass = ((x_offset, y_offset) , [])
+		vectorclass = (rad(x_offset, y_offset) , [])
 
 		while (True):
 			# increment coordinates by offset
@@ -76,17 +83,16 @@ print("Part 1: Max. visibility {} on asteroid {}".format(m[1], m[0]))
 
 # sort list by angle to laser position
 targets = m[2]
-targets.sort(key = lambda x: np.arctan2(LASERVECTOR, x[0])[1])
+targets.sort(key = lambda x: x[0])
 
 counter = 0
 cur = ()
-while counter < 200 and counter < len(asteroids):
-	print(counter)
+while counter < BET_COUNT and counter < len(asteroids):
 	for i in range(0, len(targets)):
-		print(cur)
-		if counter < 200 and len(targets[i][1]) > 0:
-			cur = targets[i][1].pop()
+		if counter < BET_COUNT and len(targets[i][1]) > 0:
+			cur = targets[i][1].pop(0)
 			counter += 1
+
 
 print("200th asteroid to be vaporized: {}".format(cur))
 print("Part 2: Answer: {}".format(cur[0] * 100 + cur[1]))
