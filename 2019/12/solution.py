@@ -41,9 +41,6 @@ callisto = {
 moons = [io, europa, ganymede, callisto]
 combinations = list(combinations(moons, 2))
 
-for i in combinations:
-	print(i)
-
 for i in range(STEPS):
 	# apply gravity
 	for c in combinations:
