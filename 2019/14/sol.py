@@ -1,5 +1,5 @@
 import re
-from math import ceil, prod
+from math import ceil, prod, floor
 
 # Test solutions:
 # 0: 31
@@ -20,7 +20,7 @@ def parse(s: str):
 		d[o_name] = (int(o_q_string), i)
 	return (d, f)
 
-with open("test3.txt", "r") as file:
+with open("input.txt", "r") as file:
 	(d, formula) = parse(file.read())
 
 base = [x for x in d if "ORE" in d[x][1]]
@@ -30,9 +30,6 @@ storage = {x:0 for x in d}
 cost = 0
 
 def make(quantity: int, name: str):
-	print("Storage: {}".format(storage))
-	print("Cost: {}".format(cost))
-	print("Make: {} {}".format(quantity, name))
 	recipe = d[name]
 	if (name in base):
 		ore_per_unit = int(recipe[1].split(" ")[0])
@@ -60,12 +57,26 @@ for elem in formula_l:
 	(q, n) = elem.split(" ")
 	cost += make(int(q), n)
 
-def redeemLeftovers():
-	redeemable = True
-	while redeemable:
-		for key in storage:
-			amount = storage[key]
-			
+# redeem leftovers
+change = True
+while change:
+	change = False
+	for key in storage:
+		amount = storage[key]
+		if amount < 1:
+			continue
+		recipe = d[key]
+		sales = floor(amount / recipe[0])
+		if sales < 1:
+			continue
+		for elem in recipe[1].split(", "):
+			(n, name) = elem.split(" ")
+			n = int(n)
+			if name == "ORE":
+				cost -= n * sales
+			else:
+				storage[name] += n * sales
+				change = True
+		storage[key] -= recipe[0] * sales
 
-print("Cost: {}".format(cost))
-print("Leftovers: {}".format(storage))
+print("Part 1: Cost: {}".format(cost))
