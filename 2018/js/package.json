@@ -4,9 +4,7 @@
 	"description": "Adcent of Code 2018",
 	"license": "UNLICENSED",
 	"private": true,
-	"dependencies": {
-		
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"eslint": "^5.4.0",
 		"eslint-config-aqua": "^4.3.4"
