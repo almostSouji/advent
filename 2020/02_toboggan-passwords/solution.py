@@ -1,5 +1,10 @@
 from typing import List, Callable
 import re
+import time
+
+begin = time.time()
+
+###
 
 with open("input.txt", "r") as file:
     lines = file.readlines()
@@ -18,5 +23,10 @@ def checkEntry(entry: str, predicate: Callable[..., bool]) -> bool:
 def solve(inp: List[str], predicate: Callable[..., bool]) -> int:
     return len([entry for entry in inp if checkEntry(entry, predicate)])
 
-print(f"Valid passwords (criteria 1): {solve(lines, check1)}")
-print(f"Valid passwords (critera 2): {solve(lines, check2)}")
+print(f"Valid passwords (criterion 1): {solve(lines, check1)}")
+print(f"Valid passwords (criterion 2): {solve(lines, check2)}")
+
+###
+
+end = time.time()
+print(f"Runtime: {(end - begin) / 1000}ms")
