@@ -29,4 +29,4 @@ print(f"Valid passwords (criterion 2): {solve(lines, check2)}")
 ###
 
 end = time.time()
-print(f"Runtime: {(end - begin) / 1000}ms")
+print(f"Runtime: {(end - begin) * 1000}ms")

@@ -27,4 +27,4 @@ print(f"Part 2: {solve2(ns)}")
 ###
 
 end = time.time()
-print(f"Runtime: {(end - begin) / 1000}ms")
+print(f"Runtime: {(end - begin) * 1000}ms")

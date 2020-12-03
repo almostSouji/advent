@@ -37,4 +37,4 @@ part2 = reduce(operator.mul, [part1, *[checkRoute(lines, slope) for slope in SLO
 
 print(f"Part 1: Trees hit: {part1}")
 print(f"Part 2: Tree product over all routes: {part2}")
-print(f"Runtime: {(end - begin) / 1000}ms")
+print(f"Runtime: {(end - begin) * 1000}ms")
