@@ -4,4 +4,4 @@ obj
 *.dll
 .vscode
 __pycache__
-xx_template/
+template_*/
