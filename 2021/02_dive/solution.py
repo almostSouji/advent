@@ -8,34 +8,19 @@ with open("./input.txt", "r") as file:
     ns = file.readlines()
 
 
-# ~ req. py 3.10
-# def solve1(ns):
-#     h = 0
-#     d = 0
-#     for n in ns:
-#         (op, val_s) = n.split()
-#         val = int(val_s)
-#         match op:
-#             case "forward":
-#                 h += val
-#             case "down":
-#                 d += val
-#             case "up":
-#                 d -= val
-#     return h * d
-
 def solve1(ns):
     h = 0
     d = 0
     for n in ns:
         (op, val_s) = n.split()
         val = int(val_s)
-        if (op == "forward"):
-            h += val
-        elif (op == "down"):
-            d += val
-        elif (op == "up"):
-            d -= val
+        match op:
+            case "forward":
+                h += val
+            case "down":
+                d += val
+            case "up":
+                d -= val
     return h * d
 
 
@@ -46,13 +31,14 @@ def solve2(ns):
     for n in ns:
         (op, val_s) = n.split()
         val = int(val_s)
-        if (op == "forward"):
-            h += val
-            d += (val * a)
-        elif (op == "down"):
-            a += val
-        elif (op == "up"):
-            a -= val
+        match op:
+            case "forward":
+                h += val
+                d += (val * a)
+            case "down":
+                a += val
+            case "up":
+                a -= val
     return h * d
 
 
