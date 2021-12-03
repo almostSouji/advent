@@ -48,7 +48,7 @@ def getReading(ns, pred):
     while len(indices) > 1:
         counts = countBits([ns[a] for a in indices])
 
-        b = pred(counts[i])
+        b = pred(*counts[i])
         indices = [a for a in indices if ns[a][i] == b]
         i += 1
 
@@ -56,8 +56,8 @@ def getReading(ns, pred):
 
 
 def solve2(ns):
-    oxy = getReading(ns, lambda c: '0' if c[0] > c[1] else '1')
-    co2 = getReading(ns, lambda c: '0' if c[0] <= c[1] else '1')
+    oxy = getReading(ns, lambda z, o: '0' if z > o else '1')
+    co2 = getReading(ns, lambda z, o: '0' if z <= o else '1')
     return oxy * co2
 
 
