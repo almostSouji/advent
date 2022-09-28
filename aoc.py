@@ -10,7 +10,9 @@ import argparse
 load_dotenv()
 
 
-def url(year, day, solution, progress):
+def url(year, day, solution, progress, input):
+    if input:
+        return f"https://adventofcode.com/{year}/day/{day}/input"
     if progress:
         return f"https://adventofcode.com/{year}/leaderboard/self"
     if solution != None:
@@ -32,10 +34,9 @@ parser.add_argument(
     metavar="year",
     choices=range(2015, 2023),
 )
-parser.add_argument(
-    "-p2", "--part2", help="Submit solution for part 2", action="store_true"
-)
+parser.add_argument("-p2", "--part2", help="Solve part 2", action="store_true")
 parser.add_argument("-p", "--progress", help="Show progress table", action="store_true")
+parser.add_argument("-i", "--input", help="Pull puzzle input", action="store_true")
 parser.add_argument(
     "-d",
     "--day",
@@ -49,25 +50,26 @@ args = parser.parse_args()
 config = vars(args)
 
 session_key = getenv("USER_SESSION")
-year, day, p2, solution, prog = (
+year, day, p2, solution, prog, inp = (
     config["year"],
     config["day"],
     config["part2"],
     config["solution"],
     config["progress"],
+    config["input"],
 )
 
 use_answer = solution != None
 
 res = (
     requests.post(
-        url(year, day, solution, prog),
+        url(year, day, solution, prog, inp),
         cookies={"session": session_key},
         data={"level": 2 if p2 else 1, "answer": solution},
     )
     if use_answer
     else requests.get(
-        url(year, day, solution, prog),
+        url(year, day, solution, prog, inp),
         cookies={"session": session_key},
     )
 )
@@ -81,10 +83,13 @@ if res.status_code != 200:
 
 soup = BeautifulSoup(res.text, features="html.parser")
 
-if prog:
-    print(soup.pre.get_text())
+if inp:
+    print(res.text)
+    print(soup.get_text().rstrip(), end="")
+elif prog:
+    print(soup.pre.get_text().strip())
 elif use_answer:
-    print(soup.main.get_text())
+    print(soup.main.get_text().strip())
 else:
     ans = []
     for article in soup.select("article"):
