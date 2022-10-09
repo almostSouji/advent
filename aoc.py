@@ -50,6 +50,10 @@ args = parser.parse_args()
 config = vars(args)
 
 session_key = getenv("USER_SESSION")
+if (session_key == None):
+    print("Missing environment variable value for USER_SESSION!")
+    exit(1)
+
 year, day, p2, solution, prog, inp = (
     config["year"],
     config["day"],
@@ -87,8 +91,14 @@ if inp:
     print(res.text)
     print(soup.get_text().rstrip(), end="")
 elif prog:
+    if (soup.pre == None):
+        print("Cannot Parse response as expected, the structure might have changed!")
+        exit(1)
     print(soup.pre.get_text().strip())
 elif use_answer:
+    if (soup.main == None):
+       print("Cannot Parse response as expected, the structure might have changed!")
+       exit(1)
     print(soup.main.get_text().strip())
 else:
     ans = []
