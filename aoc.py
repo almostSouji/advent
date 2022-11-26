@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import pprint
 from dotenv import load_dotenv
 from os import getenv
 import requests
@@ -8,6 +9,17 @@ from bs4 import BeautifulSoup
 import argparse
 
 load_dotenv()
+
+def debug(*args, pretty=False, **kwargs):
+    "print() to stderr for debuggin purposes"
+    if pretty:
+        pprint.pprint(*args, **kwargs, stream=sys.stderr)
+    else:
+        print(
+            *args,
+            **kwargs,
+            file=sys.stderr,
+        )
 
 
 def url(year, day, solution, progress, input):
@@ -37,6 +49,7 @@ parser.add_argument(
 parser.add_argument("-p2", "--part2", help="Solve part 2", action="store_true")
 parser.add_argument("-p", "--progress", help="Show progress table", action="store_true")
 parser.add_argument("-i", "--input", help="Pull puzzle input", action="store_true")
+parser.add_argument("-c", "--code", type=int, metavar="codeblock_index", help="Pull code block from challenge text (0-indexed)")
 parser.add_argument(
     "-d",
     "--day",
@@ -54,13 +67,14 @@ if (session_key == None):
     print("Missing environment variable value for USER_SESSION!")
     exit(1)
 
-year, day, p2, solution, prog, inp = (
+year, day, p2, solution, prog, inp, code_block_index = (
     config["year"],
     config["day"],
     config["part2"],
     config["solution"],
     config["progress"],
     config["input"],
+    config["code"],
 )
 
 use_answer = solution != None
@@ -90,6 +104,15 @@ soup = BeautifulSoup(res.text, features="html.parser")
 if inp:
     print(res.text)
     print(soup.get_text().rstrip(), end="")
+elif code_block_index != None:
+    code_blocks = soup.body.main.find_all("pre")
+    max_block = len(code_blocks) - 1
+    if (code_block_index > max_block):
+     debug(f"Error: Maximum block is #{max_block} trying to request #{code_block_index}.")
+     exit(1)
+    else:
+     debug(f"Code block #{code_block_index} of {max_block}:")
+     print(code_blocks[code_block_index].code.text)
 elif prog:
     if (soup.pre == None):
         print("Cannot Parse response as expected, the structure might have changed!")
@@ -108,3 +131,4 @@ else:
         ans.append(h + "\n" + "\n\n".join(ps))
 
     print("\n\n".join(ans))
+exit(0)
