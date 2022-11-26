@@ -64,7 +64,7 @@ config = vars(args)
 
 session_key = getenv("USER_SESSION")
 if (session_key == None):
-    print("Missing environment variable value for USER_SESSION!")
+    debug("Missing environment variable value for USER_SESSION!")
     exit(1)
 
 year, day, p2, solution, prog, inp, code_block_index = (
@@ -93,10 +93,7 @@ res = (
 )
 
 if res.status_code != 200:
-    print(
-        f"Failed to fetch {day}/12/{year}. Are you sure that that's correct?",
-        file=sys.stderr,
-    )
+    debug(f"Failed to fetch {day}/12/{year}. Are you sure that that's correct?")
     exit(1)
 
 soup = BeautifulSoup(res.text, features="html.parser")
@@ -115,12 +112,12 @@ elif code_block_index != None:
      print(code_blocks[code_block_index].code.text)
 elif prog:
     if (soup.pre == None):
-        print("Cannot Parse response as expected, the structure might have changed!")
+        debug("Cannot Parse response as expected, the structure might have changed!")
         exit(1)
     print(soup.pre.get_text().strip())
 elif use_answer:
     if (soup.main == None):
-       print("Cannot Parse response as expected, the structure might have changed!")
+       debug("Cannot Parse response as expected, the structure might have changed!")
        exit(1)
     print(soup.main.get_text().strip())
 else:
