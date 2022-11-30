@@ -49,7 +49,7 @@ parser.add_argument(
 parser.add_argument("-p2", "--part2", help="Solve part 2", action="store_true")
 parser.add_argument("-p", "--progress", help="Show progress table", action="store_true")
 parser.add_argument("-i", "--input", help="Pull puzzle input", action="store_true")
-parser.add_argument("-c", "--code", type=int, metavar="codeblock_index", help="Pull code block from challenge text (0-indexed)")
+parser.add_argument("-c", "--code", type=int, metavar="<codeblock_index>", help="Pull code block from challenge text (0-indexed)")
 parser.add_argument(
     "-d",
     "--day",
