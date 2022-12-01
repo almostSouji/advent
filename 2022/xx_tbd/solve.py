@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import pprint
-
+import time
 
 def debug(*args, pretty=False, **kwargs):
     "print() to stderr for debuggin purposes"
@@ -14,9 +14,17 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+begin = time.time()
+
+####
 
 for raw_line in sys.stdin:
     line = raw_line.strip()
     if len(line) == 0:
-        break
-    print(line)
+        continue
+
+
+###
+
+end = time.time()
+debug(f"Runtime: {(end - begin) * 1000}ms")
