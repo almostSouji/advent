@@ -99,7 +99,6 @@ if res.status_code != 200:
 soup = BeautifulSoup(res.text, features="html.parser")
 
 if inp:
-    print(res.text)
     print(soup.get_text().rstrip(), end="")
 elif code_block_index != None:
     code_blocks = soup.body.main.find_all("pre")
