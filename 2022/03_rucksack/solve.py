@@ -15,10 +15,8 @@ def debug(*args, pretty=False, **kwargs):
         )
 
 def score(c: chr):
-    o = ord(c)
-    isUpper = o <= ord("Z")
-    offset = ord("A") - 27 if isUpper else ord("a") - 1
-    return o - offset
+    offset = ord("A") - 27 if c.isupper() else ord("a") - 1
+    return ord(c) - offset
 
 scores = []
 group_scores = []
@@ -30,13 +28,13 @@ for raw_line in sys.stdin:
 
     curr_group.append(set(line))
     if len(curr_group) == 3:
-        common_item = reduce(lambda a, b: a.intersection(b), curr_group).pop()
+        common_item = reduce(lambda a, b: a & b, curr_group).pop()
         group_scores.append(score(common_item))
         curr_group = []
 
     breakpoint = int(len(line) / 2)
     [fst, snd] = [set(line[:breakpoint]), set(line[breakpoint:])]
-    dupe = fst.intersection(snd).pop()
+    dupe = (fst & snd).pop()
     scores.append(score(dupe))
 
 print(sum(scores))
