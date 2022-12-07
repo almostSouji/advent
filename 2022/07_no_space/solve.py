@@ -34,8 +34,9 @@ File = namedtuple("File", ["name", "size"])
 root = Dir("root", None, [])
 current = root
 
-total_space = 70_000_000
-size_update = 30_000_000
+MAX_SIZE = 100_000
+TOTAL_SPACE = 70_000_000
+SIZE_UPDATE = 30_000_000
 
 for raw_line in sys.stdin:
     line = raw_line.strip()
@@ -61,7 +62,7 @@ for raw_line in sys.stdin:
             )
 
 (total_size, sizes) = dir_sizes(root)
-current_space = total_space - total_size
+current_space = TOTAL_SPACE - total_size
 
-print(sum([x for x in sizes if x <= 100000]))
-print(min([x for x in sizes if current_space+x >= size_update]))
+print(sum([x for x in sizes if x <= MAX_SIZE]))
+print(min([x for x in sizes if current_space+x >= SIZE_UPDATE]))
