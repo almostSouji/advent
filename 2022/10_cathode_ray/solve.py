@@ -41,7 +41,7 @@ for cycle in range(1, 241):
 
     index = cycle - 1
     display[index//40][index %
-                       40] = "#" if index % 40 in range(rx-1, rx+2) else "."
+                       40] = "▓" if index % 40 in range(rx-1, rx+2) else "░"
 
     if (cycle in relevant_cycles):
         res.append(cycle * rx)
