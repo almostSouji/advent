@@ -2,6 +2,7 @@
 import sys
 import pprint
 
+
 def debug(*args, pretty=False, **kwargs):
     "print() to stderr for debuggin purposes"
     if pretty:
@@ -14,8 +15,3 @@ def debug(*args, pretty=False, **kwargs):
         )
 
 ####
-
-for raw_line in sys.stdin:
-    line = raw_line.strip()
-    if len(line) == 0:
-        continue
