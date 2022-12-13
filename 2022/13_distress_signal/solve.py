@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import pprint
+from functools import cmp_to_key
 
 
 def debug(*args, pretty=False, **kwargs):
@@ -31,12 +32,20 @@ def validate(a, b):
     return validate(a, b)
 
 
+l = []
 t = 0
 for i, chunk in enumerate(open(0).read().strip().split("\n\n")):
     a, b = map(eval, chunk.split("\n"))
+    l += [a, b]
     res = validate(a, b)
 
     if res < 0:
         t += i + 1
 
 print(f"part 1: {t}")
+
+l += [[[2]], [[6]]]
+s = list(map(str, sorted(l, key=cmp_to_key(validate))))
+pi1, pi2 = (s.index("[[2]]")+1), (s.index("[[6]]")+1)
+
+print(f"par 2: {pi1*pi2}")
