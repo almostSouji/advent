@@ -35,7 +35,10 @@ e = 500+0j
 abyss = 0
 
 
-def check(a):
+def check(a, floor=None):
+    if floor and a.imag+1 == floor:
+        return a
+
     if a+1j in s:
         if a-1+1j in s:
             if a+1+1j in s:
@@ -48,14 +51,17 @@ def check(a):
         return a+1j
 
 
-def move():
-    b = e
-    a = e+1j
+def move(floor=None):
+    b = None
+    a = e
     while b != a:
         b = a
-        a = check(a)
+        a = check(a, floor)
 
-        if (a.imag > abyss):
+        if floor:
+            if a == e:
+                return None
+        elif (a.imag > abyss):
             return None
     return a
 
@@ -81,3 +87,15 @@ while True:
         break
 
 print(f"part 1: {c}")
+
+floor = abyss + 2
+
+while True:
+    r = move(floor)
+    if r:
+        s.add(r)
+        c += 1
+    else:
+        break
+
+print(f"part 2: {c+1}")
