@@ -17,69 +17,59 @@ def debug(*args, pretty=False, **kwargs):
 ####
 
 
-def betw(a, b):
+def betw(x1, y1, x2, y2):
     res = []
-    min_x, max_x = sorted([int(a.real), int(b.real)])
-    min_y, max_y = sorted([int(a.imag), int(b.imag)])
-    if a.real == b.real:
-        for x in range(min_y, max_y+1):
-            res.append(complex(a.real, x))
-    elif a.imag == b.imag:
-        for x in range(min_x, max_x+1):
-            res.append(complex(x, a.imag))
+    xmin, xmax = sorted([x1, x2])
+    ymin, ymax = sorted([y1, y2])
+    for x in range(xmin, xmax+1):
+        for y in range(ymin, ymax+1):
+            res.append(complex(x, y))
     return res
 
 
-s = set()
-e = 500+0j
-abyss = 0
-
-
-def check(a, floor=None):
+def check(a, s, floor=None):
     if floor and a.imag+1 == floor:
         return a
 
-    if a+1j in s:
-        if a-1+1j in s:
-            if a+1+1j in s:
-                return a
-            else:
-                return a+1+1j
-        else:
-            return a-1+1j
-    else:
+    if a+1j not in s:
         return a+1j
+    if a+1j-1 not in s:
+        return a+1j-1
+    if a+1j+1 not in s:
+        return a+1j+1
+    return a
 
 
-def move(floor=None):
+def move(s, floor=None):
     b = None
-    a = e
+    a = 500
     while b != a:
         b = a
-        a = check(a, floor)
+        a = check(a, s, floor)
 
         if floor:
-            if a == e:
+            if a == 500:
                 return None
         elif (a.imag > abyss):
             return None
     return a
 
 
-for line in open(0).read().strip().splitlines():
+s = set()
+abyss = 0
+
+for line in open(0). readlines():
     pairs = list(
-        map(lambda x: x.split(","), line.split(" -> ")))
+        map(lambda x: tuple(map(int, x.split(","))), line.strip().split(" -> ")))
     for i in range(len(pairs)-1):
-        a, b = pairs[i], pairs[i+1]
-        a = complex(int(a[0]), int(a[1]))
-        b = complex(int(b[0]), int(b[1]))
-        s.update(betw(a, b))
-        abyss = max(abyss, max(a.imag, b.imag))
+        (x1, y1), (x2, y2) = pairs[i], pairs[i+1]
+        s.update(betw(x1, y1, x2, y2))
+        abyss = max(abyss, max(y1, y2))
 
 
 c = 0
 while True:
-    r = move()
+    r = move(s)
     if r:
         s.add(r)
         c += 1
@@ -91,7 +81,7 @@ print(f"part 1: {c}")
 floor = abyss + 2
 
 while True:
-    r = move(floor)
+    r = move(s, floor)
     if r:
         s.add(r)
         c += 1
