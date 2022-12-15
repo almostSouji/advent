@@ -52,3 +52,22 @@ for i in range(minx, maxx+1):
         continue
 
 print(t)
+
+N = 4000000
+for y in range(0, N+1):
+    ranges = []
+    for s, d in q:
+        diff = abs(s.imag - y)
+        if diff > d:
+            continue
+        ranges.append((max([s.real - (d-diff), 0]),
+                      min([s.real + (d-diff), N])))
+
+    s = sorted(ranges)
+    e = 0
+    for le, he in s:
+        if le > e+1:
+            debug(f"beacon at {(e+1, y)}")
+            print(int((e+1) * 4000000 + y))
+            exit(0)
+        e = max(e, le, he)
