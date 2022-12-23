@@ -50,14 +50,15 @@ def f(a, s, b):
 
 def update(name, v):
     a, s, b = v
+    if name == "root":
+        ns["root"] = (a, "=", b)
     r = f(a, s, b)
     if type(r) == int or type(r) == float:
-        if name == "root":
-            print(r)
-            exit(0)
         ns[n] = r
+        return True
     else:
         td.append((n, r))
+        return False
 
 
 for line in open(0):
@@ -68,6 +69,25 @@ for line in open(0):
         v = s.split(" ")
         update(n, v)
 
-while td:
+step = True
+while td and step:
     n, v = td.popleft()
-    update(n, v)
+    step = update(n, v)
+
+debug(ns)
+
+
+def equation(a):
+    debug(a)
+    if a == "humn":
+        return "X"
+    if type(a) == float or type(a) == int:
+        return str(a)
+    if a in ns:
+        return ns[a]
+    else:
+        return a
+
+
+a, _, b = ns["root"]
+print(equation(a), "=", equation(b))
