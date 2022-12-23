@@ -40,8 +40,6 @@ for ri, r in enumerate(open(0).readlines()):
         if c == "#":
             es.add(ri+ci*1j)
 
-n = len(es)
-
 cons = [
     [-1-1j, -1, -1+1j],  # N
     [1-1j, 1, 1+1j],  # S
@@ -49,7 +47,11 @@ cons = [
     [-1+1j, 1j, 1+1j]  # E
 ]
 
-for i in range(10):
+round = 0
+while True:
+    round += 1
+    moved = 0
+
     pr = {}
     for e in es:
         p = None
@@ -59,42 +61,44 @@ for i in range(10):
             occ = any(x in es for x in [n1, n2, n3])
             if not occ:
                 no += 1
-                if not p:
+                if p == None:
                     p = n2
         if no == 4:
             continue
 
-        if p not in pr:
-            pr[p] = []
+        if p != None:
+            if p not in pr:
+                pr[p] = []
 
-        pr[p].append(e)
+            pr[p].append(e)
 
     for c, p in pr.items():
         if len(p) == 1:
+            moved += 1
             es.remove(p[0])
             es.add(c)
 
     cons = cons[1:]+[cons[0]]
 
-assert len(es) == n, "same amount of elves"
+    if round == 10:
+        mx = my = float("inf")
+        Mx = My = float("-inf")
 
-mx = my = float("inf")
-Mx = My = float("-inf")
+        for e in es:
+            mx = min(e.real, mx)
+            Mx = max(e.real, Mx)
+            my = min(e.imag, my)
+            My = max(e.imag, My)
 
-for e in es:
-    mx = min(e.real, mx)
-    Mx = max(e.real, Mx)
-    my = min(e.imag, my)
-    My = max(e.imag, My)
+        t = 0
+        for r in range(int(mx), int(Mx+1)):
+            for c in range(int(my), int(My+1)):
+                if r+c*1j not in es:
+                    t += 1
 
-t = 0
-te = 0
-for r in range(int(mx), int(Mx+1)):
-    for c in range(int(my), int(My+1)):
-        if r+c*1j not in es:
-            t += 1
-        else:
-            te += 1
+        print(f"p1: {t}")
 
-assert te == n, "same amount of elves"
-print(t)
+    if not moved:
+        break
+
+print(f"p2: {round}")
