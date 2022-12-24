@@ -23,7 +23,7 @@ m, d = open(0).read().rstrip().split("\n\n")
 ns = list(map(int, re.findall(r"\d+", d)))
 ts = re.findall(r"\D+", d)
 inst = [None]*(len(ns)+len(ts))
-inst[::2] = ns  # type: ignore
+inst[::2] = ns
 inst[1::2] = ts
 
 f = set()
@@ -45,7 +45,7 @@ for ri, r in enumerate(m.splitlines()):
 # right 1j
 # left -1j
 heading = 1j
-pos = s
+p = s
 
 
 def translate(h):
@@ -74,17 +74,94 @@ def wrap(pos, h):
 for i in inst:
     if type(i) == int:
         for i in range(i):
-            n = pos + heading
+            n = p + heading
             if n in w:
                 break
             elif n in f:
-                pos = n
+                p = n
             else:
-                n = wrap(pos, heading)
-                pos = n
+                n = wrap(p, heading)
+                p = n
     elif i == "R":
         heading /= 1j
     elif i == "L":
         heading *= 1j
 
-print(int(1000 * pos.real + 4 * pos.imag + translate(heading)))
+print(int(1000 * p.real + 4 * p.imag + translate(heading)))
+
+# up -1
+# down 1
+# right 1j
+# left -1j
+heading = 1j
+p = s
+
+for i in inst:
+    if type(i) == int:
+        for i in range(i):
+            n = p + heading
+            if n in w:
+                break
+            elif n in f:
+                p = n
+            else:
+                nc = n
+                if n.real < 1 and 51 <= n.imag <= 100 and heading == -1:
+                    nh = 1j
+                    n = complex(n.imag + 100, 1)
+                elif n.imag < 1 and 151 <= n.real <= 200 and heading == -1j:
+                    nh = 1
+                    n = complex(1, n.real - 100)
+                elif n.real < 1 and 101 <= n.imag <= 150 and heading == -1:
+                    n = complex(200, n.imag - 100)
+                elif n.real > 200 and 1 <= n.imag <= 50 and heading == 1:
+                    n = complex(1, n.imag + 100)
+                elif n.imag > 150 and 1 <= n.real <= 50 and heading == 1j:
+                    nh = -1j
+                    n = complex(150 - n.real, 100)
+                elif n.imag > 100 and 101 <= n.real <= 150 and heading == 1j:
+                    nh = -1j
+                    n = complex(150 - n.real, 150)
+                elif n.real > 50 and 101 <= n.imag <= 150 and heading == 1:
+                    nh = -1j
+                    n = complex(n.imag - 50, 100)
+                elif n.imag > 100 and 51 <= n.real <= 100 and heading == 1j:
+                    nh = -1
+                    n = complex(50, n.real + 50)
+                elif n.real > 150 and 51 <= n.imag <= 100 and heading == 1:
+                    nh = -1j
+                    n = complex(n.imag + 100, 50)
+                elif n.imag > 50 and 151 <= n.real <= 200 and heading == 1j:
+                    nh = -1
+                    n = complex(150, n.real - 100)
+                elif n.real < 101 and 1 <= n.imag <= 50 and heading == -1:
+                    nh = 1j
+                    n = complex(n.imag + 50, 51)
+                elif n.imag < 51 and 51 <= n.real <= 100 and heading == -1j:
+                    nh = 1
+                    n = complex(101, n.real - 50)
+                elif n.imag < 51 and 1 <= n.real <= 50 and heading == -1j:
+                    nh = 1j
+                    n = complex(150 - n.real, 1)
+                elif n.imag < 1 and 101 <= n.real <= 150 and heading == -1j:
+                    nh = 1j
+                    n = complex(150 - n.real, 51)
+
+                if n not in f and n not in w:
+                    debug(f"p {p} h {heading} nc {nc} n {n}")
+                assert n in f or n in w, "valid coordinate"
+
+                if n != nc:
+                    debug(f"warped from {nc} to {n}")
+                    assert 129+100j in w
+
+                if n not in w:
+                    p = n
+                    heading = nh
+        pass
+    elif i == "R":
+        heading /= 1j
+    elif i == "L":
+        heading *= 1j
+
+print(int(1000 * p.real + 4 * p.imag + translate(heading)))
