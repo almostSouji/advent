@@ -29,15 +29,15 @@ for ri, row in enumerate(open(0).readlines()[1:]):
 # consistent with ><v^
 deltas = [(0, 1), (0, -1), (1, 0), (-1, 0)]
 
-mins = 0
-# r c time
-s = (-1, 0, 0)
-g = (ri, ci-1)
-
+# r c time (normalized)
 visited = set()
-q = deque([s])
+
+# r c time
+q = deque([(-1, 0, 0)])
 rep = lcm(ri, ci)
 
+parts = []
+g = (ri, ci-1)
 while q:
     r, c, t = q.popleft()
     t += 1
@@ -47,10 +47,25 @@ while q:
         nc = c+cd
 
         if (nr, nc) == g:
-            print(t)
-            exit(0)
+            parts.append(t)
 
-        if (nr, nc) != (-1, 0):
+            match len(parts):
+                case 1:
+                    print(f"part 1: {t}")
+                    q = deque([(ri, ci-1, t)])
+                    visited.clear()
+                    g = (-1, 0)
+                    break
+                case 2:
+                    q = deque([(-1, 0, t)])
+                    visited.clear()
+                    g = (ri, ci-1)
+                    break
+                case 3:
+                    print(f"part 2: {t}")
+                    exit(0)
+
+        if (nr, nc) != (-1, 0) and (nr, nc) != (ri, ci-1):
             if nr < 0 or nr >= ri:
                 continue
             if nc < 0 or nc >= ci:
