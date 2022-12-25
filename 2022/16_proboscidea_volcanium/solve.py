@@ -89,3 +89,11 @@ def dfs(time, v, bitmask):
 
 
 print(dfs(30, "AA", 0))
+
+b = (1 << len(nonempty)) - 1  # all valves open
+
+m = 0
+for i in range((b + 1) // 2):
+    m = max(m, dfs(26, "AA", i) + dfs(26, "AA", b ^ i))
+
+print(m)
