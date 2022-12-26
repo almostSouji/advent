@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import pprint
-from collections import deque
+import sympy
 
 
 def debug(*args, pretty=False, **kwargs):
@@ -18,76 +18,46 @@ def debug(*args, pretty=False, **kwargs):
 ####
 
 
-ns = {}
-td = deque()
+lines = [x.strip() for x in open(0).readlines()]
+l2 = [x for x in lines]
+ms = {}
 
 
-def res(v):
-    if v in ns:
-        return ns[v]
+for x in lines:
+    name, exp = x.split(": ")
+    if exp.isdigit():
+        ms[name] = int(exp)
     else:
-        return v
+        l, op, r = exp.split(" ")
+        if l in ms and r in ms:
+            ms[name] = eval(f"{ms[l]} {op} {ms[r]}")
+        else:
+            lines.append(x)
 
+r = ms["root"]
+print(f"p1: {int(r)}")
 
-def f(a, s, b):
-    ar = res(a)
-    br = res(b)
-    tar = type(ar)
-    tbr = type(br)
+ms = {"humn": sympy.Symbol("x")}
+ops = {
+    "+": lambda x, y: x + y,
+    "-": lambda x, y: x - y,
+    "*": lambda x, y: x * y,
+    "/": lambda x, y: x / y,
+}
 
-    if (tar == int or tar == float) and (tbr == int or tbr == float):
-        match s:
-            case "-":
-                return ar - br
-            case "+":
-                return ar + br
-            case "*":
-                return ar * br
-            case "/":
-                return ar / br
-    return (ar, s, br)
+for x in l2:
+    name, exp = x.split(": ")
 
-
-def update(name, v):
-    a, s, b = v
-    if name == "root":
-        ns["root"] = (a, "=", b)
-    r = f(a, s, b)
-    if type(r) == int or type(r) == float:
-        ns[n] = r
-        return True
+    if name in ms:
+        continue
+    if exp.isdigit():
+        ms[name] = sympy.Integer(exp)
     else:
-        td.append((n, r))
-        return False
-
-
-for line in open(0):
-    n, s = line.strip().split(': ')
-    if s.isdigit():
-        ns[n] = int(s)
-    else:
-        v = s.split(" ")
-        update(n, v)
-
-step = True
-while td and step:
-    n, v = td.popleft()
-    step = update(n, v)
-
-debug(ns)
-
-
-def equation(a):
-    debug(a)
-    if a == "humn":
-        return "X"
-    if type(a) == float or type(a) == int:
-        return str(a)
-    if a in ns:
-        return ns[a]
-    else:
-        return a
-
-
-a, _, b = ns["root"]
-print(equation(a), "=", equation(b))
+        l, op, r = exp.split(" ")
+        if l in ms and r in ms:
+            if name == "root":
+                print(f"p2: {sympy.solve(ms[l] - ms[r])[0]}")
+                break
+            ms[name] = ops[op](ms[l], ms[r])
+        else:
+            l2.append(x)
