@@ -26,142 +26,145 @@ inst = [None]*(len(ns)+len(ts))
 inst[::2] = ns
 inst[1::2] = ts
 
-f = set()
-w = set()
-s = None
+floor = set()
+walls = set()
+start = None
 
 for ri, r in enumerate(m.splitlines()):
     for ci, c in enumerate(r):
         v = ri+1+ci*1j+1j
-        if not s and c != " ":
-            s = v
+        if not start and c != " ":
+            start = v
         if c == "#":
-            w.add(v)
+            walls.add(v)
         elif c == ".":
-            f.add(v)
+            floor.add(v)
 
-# up -1
-# down 1
-# right 1j
-# left -1j
-heading = 1j
-p = s
+"""
+Portals are defined by their spawn point (left or topmost point) and the entrance direction
+Connections are defined by two portals and if the connection inverts delta to the spawn point
+"""
+PORTAL_CONNECTIONS = [
+    ((51j, -1), (151, -1j), False),  # 2U, 6L
+    ((101j, -1), (201+1j, 1), False),  # 1U, 6D
+    ((1+151j, 1j), (101+101j, 1j), True),  # 1R, 4R
+    ((151+51j, 1), (151+51j, 1j), False),  # 4D, 6R
+    ((1+50j, -1j), (101, -1j), True),  # 2L, 5L
+    ((51+50j, -1j), (100+1j, -1), False),  # 3L, 5U
+    ((51+101j, 1), (51+101j, 1j), False)  # 1D, 3R
+]
 
 
-def translate(h):
-    match h:
-        case 1j:
-            return 0
-        case -1:
-            return 1
-        case -1j:
-            return 2
-        case 1:
-            return 3
+def portal_delta(port, pos, heading):
+    spawn, direction = port
+    if heading != direction:
+        return -1
+
+    if direction == 1 or direction == -1 and pos.real == spawn.real:
+        if pos.imag in range(int(spawn.imag), int(spawn.imag + 50)):
+            return abs(pos.imag - spawn.imag)
+    else:
+        if pos.real in range(int(spawn.real), int(spawn.real+50)):
+            return abs(pos.real - spawn.real)
+    return -1
 
 
 def wrap(pos, h):
     n = pos - h
-    while n in f or n in w:
+    while n in floor or n in walls:
         n -= h
     n += h
-    if n in f:
-        return n
+    if n in floor:
+        return n, h
     else:
-        return pos
+        return None
 
 
-for i in inst:
-    if type(i) == int:
-        for i in range(i):
-            n = p + heading
-            if n in w:
-                break
-            elif n in f:
-                p = n
-            else:
-                n = wrap(p, heading)
-                p = n
-    elif i == "R":
-        heading /= 1j
-    elif i == "L":
-        heading *= 1j
+def wrap_cube(pos, h):
+    assert pos not in floor and pos not in walls, pos
 
-print(int(1000 * p.real + 4 * p.imag + translate(heading)))
+    n = pos
+    for a, b, flip in PORTAL_CONNECTIONS:
+        # delta to portal spawns, -1 if portal n/a
+        a_delta = portal_delta(a, n, h)
+        b_delta = portal_delta(b, n, h)
 
-# up -1
-# down 1
-# right 1j
-# left -1j
-heading = 1j
-p = s
+        # determien out portal and applicable delta
+        if a_delta >= 0:
+            delta = a_delta
+            out_spawn, out_direction = b
+        elif b_delta >= 0:
+            delta = b_delta
+            out_spawn, out_direction = a
+        else:
+            # connection not relevant
+            continue
 
-for i in inst:
-    if type(i) == int:
-        for i in range(i):
-            n = p + heading
-            if n in w:
-                break
-            elif n in f:
-                p = n
-            else:
-                nc = n
-                if n.real < 1 and 51 <= n.imag <= 100 and heading == -1:
-                    nh = 1j
-                    n = complex(n.imag + 100, 1)
-                elif n.imag < 1 and 151 <= n.real <= 200 and heading == -1j:
-                    nh = 1
-                    n = complex(1, n.real - 100)
-                elif n.real < 1 and 101 <= n.imag <= 150 and heading == -1:
-                    n = complex(200, n.imag - 100)
-                elif n.real > 200 and 1 <= n.imag <= 50 and heading == 1:
-                    n = complex(1, n.imag + 100)
-                elif n.imag > 150 and 1 <= n.real <= 50 and heading == 1j:
-                    nh = -1j
-                    n = complex(150 - n.real, 100)
-                elif n.imag > 100 and 101 <= n.real <= 150 and heading == 1j:
-                    nh = -1j
-                    n = complex(150 - n.real, 150)
-                elif n.real > 50 and 101 <= n.imag <= 150 and heading == 1:
-                    nh = -1j
-                    n = complex(n.imag - 50, 100)
-                elif n.imag > 100 and 51 <= n.real <= 100 and heading == 1j:
-                    nh = -1
-                    n = complex(50, n.real + 50)
-                elif n.real > 150 and 51 <= n.imag <= 100 and heading == 1:
-                    nh = -1j
-                    n = complex(n.imag + 100, 50)
-                elif n.imag > 50 and 151 <= n.real <= 200 and heading == 1j:
-                    nh = -1
-                    n = complex(150, n.real - 100)
-                elif n.real < 101 and 1 <= n.imag <= 50 and heading == -1:
-                    nh = 1j
-                    n = complex(n.imag + 50, 51)
-                elif n.imag < 51 and 51 <= n.real <= 100 and heading == -1j:
-                    nh = 1
-                    n = complex(101, n.real - 50)
-                elif n.imag < 51 and 1 <= n.real <= 50 and heading == -1j:
-                    nh = 1j
-                    n = complex(150 - n.real, 1)
-                elif n.imag < 1 and 101 <= n.real <= 150 and heading == -1j:
-                    nh = 1j
-                    n = complex(150 - n.real, 51)
+        # invert delta, if connection requires it
+        if flip:
+            delta = 49 - delta
 
-                if n not in f and n not in w:
-                    debug(f"p {p} h {heading} nc {nc} n {n}")
-                assert n in f or n in w, "valid coordinate"
+        # translate delta into imag, if required
+        if out_direction == 1 or out_direction == -1:
+            delta *= 1j
 
-                if n != nc:
-                    debug(f"warped from {nc} to {n}")
-                    assert 129+100j in w
+        # apply delta to the out portal spawn point
+        n = out_spawn + delta
 
-                if n not in w:
+        # new heading is inverse of in-direction of out portal
+        new_heading = -out_direction
+        # walk the last step out of the portal
+        n += new_heading
+        assert n in floor or n in walls
+
+        if n in walls:
+            # if wall, discord
+            return None
+        else:
+            # return new position and heading
+            assert n in floor, n
+            return n, new_heading
+
+    assert False, (pos, h)
+
+
+def solve(instructions, wrapper):
+    heading = 1j
+    p = start
+
+    for i in instructions:
+        if type(i) == int:
+            for i in range(i):
+                # test new position
+                n = p + heading
+                if n in walls:
+                    # wall, stop
+                    break
+                elif n in floor:
+                    # floor, commit change
                     p = n
-                    heading = nh
-        pass
-    elif i == "R":
-        heading /= 1j
-    elif i == "L":
-        heading *= 1j
+                else:
+                    # if not wall or floor, needs to wrap
+                    wrap_res = wrapper(n, heading)
+                    if wrap_res:
+                        # wrap results in non-wall, commit change
+                        p, heading = wrap_res
+                    else:
+                        break
+        # turn
+        elif i == "R":
+            heading /= 1j
+        elif i == "L":
+            heading *= 1j
 
-print(int(1000 * p.real + 4 * p.imag + translate(heading)))
+    return int(1000 * p.real + 4 * p.imag + [1j, 1, -1j, -1].index(heading))
+
+
+res1 = solve(inst, wrap)
+print(
+    f"part 1: {res1}")
+assert 164014 == res1, res1
+
+res2 = solve(inst, wrap_cube)
+print(f"part 2: {res2}")
+assert 47525 == res2, res2
