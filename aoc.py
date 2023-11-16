@@ -118,12 +118,12 @@ elif code_block_index != None:
         print(code_blocks[code_block_index].code.text.strip())
 elif prog:
     if (soup.pre == None):
-        debug("Cannot Parse response as expected, the structure might have changed!")
+        debug("Cannot Parse response as expected. This might mean the site structure has changed or the configured session key has expired!")
         exit(1)
     print(soup.pre.get_text().strip())
 elif use_answer:
     if (soup.main == None):
-        debug("Cannot Parse response as expected, the structure might have changed!")
+        debug("Cannot Parse response as expected. This might mean the site structure has changed or the configured session key has expired!")
         exit(1)
     print(soup.main.get_text().strip())
 else:
