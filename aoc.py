@@ -46,7 +46,7 @@ parser.add_argument(
     default=date.today().year,
     help="Target year since 2015",
     metavar="year",
-    choices=range(2015, 2023),
+    choices=range(2015, 2024),
 )
 parser.add_argument("-p2", "--part2", help="Solve part 2", action="store_true")
 parser.add_argument("-p", "--progress",
