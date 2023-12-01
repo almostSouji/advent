@@ -30,13 +30,13 @@ def find_num(text, alphabet, allow_alphabet=False):
                 if word in buffer:
                     return str(i + 1)
 
-nums = []
-nums2 = []
+s = 0
+s2 = 0
 for line in open(0):
   ns = [find_num(line, numbers), find_num(line[::-1], numbers)]
   ns2 = [find_num(line, numbers, True), find_num(line[::-1], numbers_rev, True)]
-  nums.append(int( ns[0]+ns[-1]))
-  nums2.append(int(ns2[0]+ns2[-1]))
+  s += int(ns[0]+ns[-1])
+  s2 += int(ns2[0]+ns2[-1])
 
-print(sum(nums))
-print(sum(nums2))
+print(s)
+print(s2)
