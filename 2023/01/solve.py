@@ -16,7 +16,7 @@ def debug(*args, pretty=False, **kwargs):
 
 ####
 
-numbers = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 numbers_rev = [word[::-1] for word in numbers]
 
 def find_num(text, alphabet, allow_alphabet=False): 
@@ -28,8 +28,7 @@ def find_num(text, alphabet, allow_alphabet=False):
             buffer += c
             for i, word in enumerate(alphabet):
                 if word in buffer:
-                    return str(i)
-
+                    return str(i + 1)
 
 nums = []
 nums2 = []
