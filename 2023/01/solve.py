@@ -17,46 +17,27 @@ def debug(*args, pretty=False, **kwargs):
 ####
 
 numbers = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+numbers_rev = [word[::-1] for word in numbers]
+
+def find_num(text, alphabet, allow_alphabet=False): 
+    buffer = ""
+    for c in text:
+        if c.isdigit():
+            return c
+        elif allow_alphabet:
+            buffer += c
+            for i, word in enumerate(alphabet):
+                if word in buffer:
+                    return str(i)
+
 
 nums = []
 nums2 = []
 for line in open(0):
-  buffer = ""
-  buffer2 = ""
-  wordbuffer = ""
-  for c in line:
-      if c.isdigit():
-          buffer += c
-          buffer2 += c
-          break
-              
-      else:
-          wordbuffer += c
-          for i, word in enumerate(numbers):
-              if word in wordbuffer:
-                  buffer2 += str(i)
-                  break
-  wordbuffer = ""
-  for c in line[::-1]:
-      if c.isdigit():
-          buffer += c
-          buffer2 += c
-          break
-      else:
-          wordbuffer += c
-          for i, word in enumerate(numbers):
-              if word[::-1] in wordbuffer:
-                  buffer2 += str(i)
-                  break
-          else:
-              continue
-          break
-
-  nums.append(int(buffer[0]+buffer[-1]))
-  nums2.append(int(buffer2[0]+buffer2[-1])) 
-
-  buffer = ""
-  buffer2 = ""
+  ns = [find_num(line, numbers), find_num(line[::-1], numbers)]
+  ns2 = [find_num(line, numbers, True), find_num(line[::-1], numbers_rev, True)]
+  nums.append(int( ns[0]+ns[-1]))
+  nums2.append(int(ns2[0]+ns2[-1]))
 
 print(sum(nums))
 print(sum(nums2))
