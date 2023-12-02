@@ -16,7 +16,7 @@ def debug(*args, pretty=False, **kwargs):
 
 ####
 
-total_cubes = {
+available_cubes = {
     "red": 12,
     "green": 13,
     "blue": 14,
@@ -24,10 +24,8 @@ total_cubes = {
 
 s = 0
 s2 = 0
-for line in open(0):
+for i, line in enumerate(open(0)):
     game, rounds = line.split(":")
-    _, id = game.split(" ")
-    id = int(id)
     minimums = {
         "red": 0,
         "green": 0,
@@ -35,19 +33,18 @@ for line in open(0):
     }
 
     possible = True
-    for run in rounds.split(";"):
-        for cube in run.split(","):
-            num, color = cube.strip().split(" ")
+    for run in line.split(": ")[1].split("; "):
+        for cube in run.split(", "):
+            num, color = cube.split()
             num = int(num)
-            available = total_cubes.get(color, 0)
 
-            if minimums.get(color, 0) < num:
-                minimums[color] = num
+            minimums[color] = max(minimums[color], num)
 
-            if available < num:
+            if available_cubes.get(color, 0) < num:
                 possible = False
     if possible:
-        s += id
+        s += i+1
+
     power = 1
     for val in minimums.values():
         power *= val
@@ -55,3 +52,6 @@ for line in open(0):
 
 print(s)
 print(s2)
+
+assert s == 2716, s
+assert s2 == 72227, s2
