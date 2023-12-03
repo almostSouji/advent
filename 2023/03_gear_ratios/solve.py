@@ -55,3 +55,17 @@ for i, index in enumerate(to_del):
     del numbers[index-i]
 
 print(sum([x[0] for x in numbers]))
+
+s =0
+for coord, symbol in symbols.items():
+    if symbol == "*":
+        nums = []
+        for num, num_coord in numbers:
+            for delta in deltas:
+                if coord + delta in num_coord:
+                    nums.append(num)
+                    break
+        if len(nums) == 2:
+            s += nums[0] * nums[1]
+
+print(s)
