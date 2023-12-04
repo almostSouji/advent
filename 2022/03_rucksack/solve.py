@@ -3,6 +3,7 @@ import sys
 import pprint
 from functools import reduce
 
+
 def debug(*args, pretty=False, **kwargs):
     "print() to stderr for debuggin purposes"
     if pretty:
@@ -14,9 +15,11 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 def score(c: chr):
     offset = ord("A") - 27 if c.isupper() else ord("a") - 1
     return ord(c) - offset
+
 
 scores = []
 group_scores = []

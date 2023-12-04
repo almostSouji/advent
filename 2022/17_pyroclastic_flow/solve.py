@@ -17,21 +17,24 @@ def debug(*args, pretty=False, **kwargs):
 
 def debug_plot_set(s):
     h = max(map(lambda x: x.imag, s))
-    a = ["".join(["#" if c+r*1j in s else "." for c in range(7)])
-         for r in range(int(h+3))]
+    a = [
+        "".join(["#" if c + r * 1j in s else "." for c in range(7)])
+        for r in range(int(h + 3))
+    ]
     a.reverse()
     for row in a:
         print(row)
+
 
 ####
 
 
 SHAPES = [
     [0, 1, 2, 3],
-    [0+1j, 1+1j, 2+1j, 1, 1+2j],
-    [0, 1, 2, 2+1j, 2+2j],
+    [0 + 1j, 1 + 1j, 2 + 1j, 1, 1 + 2j],
+    [0, 1, 2, 2 + 1j, 2 + 2j],
     [0, 1j, 2j, 3j],
-    [0, 1, 1j, 1+1j]
+    [0, 1, 1j, 1 + 1j],
 ]
 
 
@@ -73,16 +76,16 @@ def solve(n):
     h = -1
 
     while i <= n:
-        rock = [x+2+(h+4)*1j for x in SHAPES[si]]
+        rock = [x + 2 + (h + 4) * 1j for x in SHAPES[si]]
         while True:
             jo = jets[ji]
-            nex = [x+jo for x in rock]
+            nex = [x + jo for x in rock]
             if not is_collision(nex, rocks):
                 rock = nex
 
             ji = (ji + 1) % len(jets)
 
-            nex = [x-1j for x in rock]
+            nex = [x - 1j for x in rock]
             if not is_collision(nex, rocks):
                 rock = nex
             else:
@@ -91,7 +94,7 @@ def solve(n):
         i += 1
         rocks.update(rock)
         h = max(x.imag for x in rocks)
-        si = (si+1) % len(SHAPES)
+        si = (si + 1) % len(SHAPES)
 
         sky = skyline(rocks)
         key = (si, ji, sky)
@@ -99,9 +102,9 @@ def solve(n):
         if key in states:
             h_prev, i_prev = states[key]
             h_delta = h - h_prev
-            i_delta = i+1 - i_prev
+            i_delta = i + 1 - i_prev
 
-            todo = n - i+1
+            todo = n - i + 1
             repetitions = todo // i_delta
 
             h_skipped = h_delta * repetitions + 1
@@ -109,9 +112,9 @@ def solve(n):
 
             states = {}
         else:
-            states[key] = (h, i+1)
+            states[key] = (h, i + 1)
 
-    return(int(h-1 + h_skipped))
+    return int(h - 1 + h_skipped)
 
 
 print(f"p1: {solve(2022)} -1, off by one :(")

@@ -19,6 +19,7 @@ def pp(l):
     for row in l:
         print("".join([str(elem) for elem in row]))
 
+
 ####
 
 
@@ -32,7 +33,7 @@ res = []
 display = [[" " for _ in list(range(0, 40))] for _ in range(0, 6)]
 
 for cycle in range(1, 241):
-    if (not pause and len(inst_buffer) == 0):
+    if not pause and len(inst_buffer) == 0:
         line = sys.stdin.readline().strip()
         match line.split(" "):
             case "addx", x:
@@ -40,13 +41,14 @@ for cycle in range(1, 241):
                 pause = True
 
     index = cycle - 1
-    display[index//40][index %
-                       40] = "▓" if index % 40 in range(rx-1, rx+2) else "░"
+    display[index // 40][index % 40] = (
+        "▓" if index % 40 in range(rx - 1, rx + 2) else "░"
+    )
 
-    if (cycle in relevant_cycles):
+    if cycle in relevant_cycles:
         res.append(cycle * rx)
 
-    if (not pause and len(inst_buffer) > 0):
+    if not pause and len(inst_buffer) > 0:
         rx += inst_buffer.pop()
     elif pause:
         pause = False

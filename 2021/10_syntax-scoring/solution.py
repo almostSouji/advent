@@ -7,19 +7,9 @@ begin = time.time()
 with open("./input.txt", "r") as file:
     ns = list(map(lambda x: x.strip(), file.readlines()))
 
-error_scores = {
-    ")": 3,
-    "]": 57,
-    "}": 1197,
-    ">": 25137
-}
+error_scores = {")": 3, "]": 57, "}": 1197, ">": 25137}
 
-complete_scores = {
-    ")": 1,
-    "]": 2,
-    "}": 3,
-    ">": 4
-}
+complete_scores = {")": 1, "]": 2, "}": 3, ">": 4}
 
 
 pairs = {
@@ -69,7 +59,7 @@ def solve2(ns):
     incomplete = [n for n in ns if error_score(n) == 0]
     scores = [complete(n) for n in incomplete]
     scores.sort()
-    return scores[int(len(scores)/2)]
+    return scores[int(len(scores) / 2)]
 
 
 print(f"Part 1: {solve1(ns)}")

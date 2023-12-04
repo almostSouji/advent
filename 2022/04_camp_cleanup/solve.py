@@ -14,6 +14,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -28,8 +29,8 @@ for raw_line in sys.stdin:
     (fst_start, fst_end) = fst.split("-")
     (snd_start, snd_end) = snd.split("-")
 
-    fst_s = set(range(int(fst_start), int(fst_end)+1))
-    snd_s = set(range(int(snd_start), int(snd_end)+1))
+    fst_s = set(range(int(fst_start), int(fst_end) + 1))
+    snd_s = set(range(int(snd_start), int(snd_end) + 1))
 
     if fst_s.issubset(snd_s) or fst_s.issuperset(snd_s):
         c += 1

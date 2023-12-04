@@ -14,6 +14,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 available_cubes = {
@@ -26,11 +27,7 @@ s = 0
 s2 = 0
 for i, line in enumerate(open(0)):
     game, rounds = line.split(":")
-    minimums = {
-        "red": 0,
-        "green": 0,
-        "blue": 0
-    }
+    minimums = {"red": 0, "green": 0, "blue": 0}
 
     possible = True
     for run in line.split(": ")[1].split("; "):
@@ -43,7 +40,7 @@ for i, line in enumerate(open(0)):
             if available_cubes.get(color, 0) < num:
                 possible = False
     if possible:
-        s += i+1
+        s += i + 1
 
     power = 1
     for val in minimums.values():

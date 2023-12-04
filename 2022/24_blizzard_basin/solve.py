@@ -16,6 +16,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -37,14 +38,14 @@ q = deque([(-1, 0, 0)])
 rep = lcm(ri, ci)
 
 parts = []
-g = (ri, ci-1)
+g = (ri, ci - 1)
 while q:
     r, c, t = q.popleft()
     t += 1
 
     for rd, cd in deltas + [(0, 0)]:
-        nr = r+rd
-        nc = c+cd
+        nr = r + rd
+        nc = c + cd
 
         if (nr, nc) == g:
             parts.append(t)
@@ -52,20 +53,20 @@ while q:
             match len(parts):
                 case 1:
                     print(f"part 1: {t}")
-                    q = deque([(ri, ci-1, t)])
+                    q = deque([(ri, ci - 1, t)])
                     visited.clear()
                     g = (-1, 0)
                     break
                 case 2:
                     q = deque([(-1, 0, t)])
                     visited.clear()
-                    g = (ri, ci-1)
+                    g = (ri, ci - 1)
                     break
                 case 3:
                     print(f"part 2: {t}")
                     exit(0)
 
-        if (nr, nc) != (-1, 0) and (nr, nc) != (ri, ci-1):
+        if (nr, nc) != (-1, 0) and (nr, nc) != (ri, ci - 1):
             if nr < 0 or nr >= ri:
                 continue
             if nc < 0 or nc >= ci:

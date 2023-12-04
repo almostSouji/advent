@@ -6,8 +6,7 @@ begin = time.time()
 ###
 
 with open("./input.txt", "r") as file:
-    ns = list(map(lambda x: [int(n)
-              for n in list(x.strip())], file.readlines()))
+    ns = list(map(lambda x: [int(n) for n in list(x.strip())], file.readlines()))
 
 
 def check_point(p, ns):
@@ -20,14 +19,14 @@ def check_point(p, ns):
 def flash(p, ns):
     (x, y) = p
     n = [
-        (x-1, y-1),
-        (x-1, y),
-        (x-1, y+1),
-        (x, y+1),
-        (x+1, y+1),
-        (x+1, y),
-        (x+1, y-1),
-        (x, y-1),
+        (x - 1, y - 1),
+        (x - 1, y),
+        (x - 1, y + 1),
+        (x, y + 1),
+        (x + 1, y + 1),
+        (x + 1, y),
+        (x + 1, y - 1),
+        (x, y - 1),
     ]
 
     for q in n:
@@ -63,7 +62,7 @@ def step(ns):
 
 def solve1(ns):
     ctr = 0
-    for i in range(1, 100+1):
+    for i in range(1, 100 + 1):
         ctr += step(ns)
     return ctr
 
@@ -73,7 +72,7 @@ def solve2(ns):
     while True:
         step(ns)
         flat = [c for r in ns for c in r]
-        if (sum(flat) == 0):
+        if sum(flat) == 0:
             return i
         i += 1
 

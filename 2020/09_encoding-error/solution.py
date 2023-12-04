@@ -19,12 +19,14 @@ def checksum(preamble: List[int], n: int):
                 return True
     return False
 
+
 def findVuln(nums: [int]) -> int:
-    for (i, e) in enumerate(nums):
+    for i, e in enumerate(nums):
         if i < PREAMBLE_LENGTH:
             continue
-        if not checksum(nums[i-PREAMBLE_LENGTH:i], e):
+        if not checksum(nums[i - PREAMBLE_LENGTH : i], e):
             return e
+
 
 v = findVuln(numbers)
 
@@ -41,7 +43,7 @@ for i in range(0, len(numbers)):
         if sm == v:
             if i == j:
                 break
-            found = numbers[i:j+1]
+            found = numbers[i : j + 1]
             (s, l) = (min(found), max(found))
             print(f"Weakness: {s+l} | smallest: {s}, largest: {l}")
             break

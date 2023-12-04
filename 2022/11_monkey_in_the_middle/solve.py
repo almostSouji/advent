@@ -19,31 +19,33 @@ def debug(*args, pretty=False, **kwargs):
 
 def p_monkeys(monkeys):
     for i, monkey in enumerate(monkeys):
-        debug("monkey", i, monkey["items"],
-              "inspections:", monkey["inspections"])
+        debug("monkey", i, monkey["items"], "inspections:", monkey["inspections"])
+
 
 ####
 
 
 monkeys = []
 
-for (i, raw_line) in enumerate(sys.stdin):
+for i, raw_line in enumerate(sys.stdin):
     line = raw_line.strip()
 
     m_index = i // 7
-    if (len(monkeys) - 1 < m_index):
+    if len(monkeys) - 1 < m_index:
         monkeys.append({})
 
     match (i % 7):
         case 0:
             monkeys[m_index]["inspections"] = 0
         case 1:
-            monkeys[m_index]["items"] = list(reversed([int(x) for x in line.split(":")[
-                1].strip().split(",")]))
+            monkeys[m_index]["items"] = list(
+                reversed([int(x) for x in line.split(":")[1].strip().split(",")])
+            )
         case 2:
             # operation
             monkeys[m_index]["operation"] = tuple(
-                line.split("=")[1].strip().split(" ")[1:])
+                line.split("=")[1].strip().split(" ")[1:]
+            )
         case 3:
             # test
             monkeys[m_index]["div"] = int(line.split("by")[1])
@@ -74,7 +76,11 @@ def iterate(monkeys, rounds, worry_decrease):
 
                 item = worry_decrease(item)
 
-                next_monkey = monkey["if_true"] if item % monkey["div"] == 0 else monkey["if_false"]
+                next_monkey = (
+                    monkey["if_true"]
+                    if item % monkey["div"] == 0
+                    else monkey["if_false"]
+                )
                 next_items = monkeys[next_monkey]["items"]
                 monkeys[next_monkey]["items"] = [item] + next_items
 

@@ -15,6 +15,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -28,7 +29,7 @@ def validate(a, b):
                 return r
         return len(a) - len(b)
 
-    a, b = a if isinstance(a, list) else [a], b if isinstance(b, list) else[b]
+    a, b = a if isinstance(a, list) else [a], b if isinstance(b, list) else [b]
     return validate(a, b)
 
 
@@ -46,6 +47,6 @@ print(f"part 1: {t}")
 
 l += [[[2]], [[6]]]
 s = list(map(str, sorted(l, key=cmp_to_key(validate))))
-pi1, pi2 = (s.index("[[2]]")+1), (s.index("[[6]]")+1)
+pi1, pi2 = (s.index("[[2]]") + 1), (s.index("[[6]]") + 1)
 
 print(f"par 2: {pi1*pi2}")

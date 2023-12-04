@@ -14,14 +14,15 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
 def link(l):
     z = None
     for i in range(len(l)):
-        l[i][0] = l[(i-1) % len(l)]
-        l[i][2] = l[(i+1) % len(l)]
+        l[i][0] = l[(i - 1) % len(l)]
+        l[i][2] = l[(i + 1) % len(l)]
         if l[i][1] == 0:
             z = l[i]
     return z
@@ -39,7 +40,7 @@ def mix(l, times):
             er[0] = el
 
             if v > 0:
-                for _ in range(v % (len(l)-1)):
+                for _ in range(v % (len(l) - 1)):
                     p = p[2]
                 pr = p[2]
                 p[2] = e
@@ -48,7 +49,7 @@ def mix(l, times):
                 e[2] = pr
 
             if v < 0:
-                for _ in range(-v % (len(l)-1)):
+                for _ in range(-v % (len(l) - 1)):
                     p = p[0]
 
                 pl = p[0]

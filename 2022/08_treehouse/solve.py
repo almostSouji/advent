@@ -20,6 +20,7 @@ def print_field(field):
     for row in field:
         debug(row)
 
+
 ####
 
 
@@ -40,28 +41,28 @@ def score_tree(field, i, j):
     scores = []
 
     s = 0
-    for x in range(i+1, x_dim):
+    for x in range(i + 1, x_dim):
         s += 1
         if field[x][j][0] >= tree[0]:
             break
     scores.append(s)
 
     s = 0
-    for x in range(i-1, -1, -1):
+    for x in range(i - 1, -1, -1):
         s += 1
         if field[x][j][0] >= tree[0]:
             break
     scores.append(s)
 
     s = 0
-    for x in range(j+1, y_dim):
+    for x in range(j + 1, y_dim):
         s += 1
         if field[i][x][0] >= tree[0]:
             break
     scores.append(s)
 
     s = 0
-    for x in range(j-1, -1, -1):
+    for x in range(j - 1, -1, -1):
         s += 1
         if field[i][x][0] >= tree[0]:
             break
@@ -86,7 +87,7 @@ for i in range(len(field)):
         highest = update_tree(field, i, j, highest)
 
     highest = -1
-    for j in range(len(field[0])-1, -1, -1):
+    for j in range(len(field[0]) - 1, -1, -1):
         highest = update_tree(field, i, j, highest)
 
 for j in range(len(field[0])):
@@ -95,11 +96,10 @@ for j in range(len(field[0])):
         highest = update_tree(field, i, j, highest)
 
     highest = -1
-    for i in range(len(field)-1, -1, -1):
+    for i in range(len(field) - 1, -1, -1):
         highest = update_tree(field, i, j, highest)
 
-print(sum([len([element for element in row if element[1] == "#"])
-      for row in field]))
+print(sum([len([element for element in row if element[1] == "#"]) for row in field]))
 
 for i in range(len(field)):
     for j in range(len(field[0])):

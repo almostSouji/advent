@@ -21,14 +21,15 @@ def dp(s):
     my = min(x.imag for x in s)
     My = max(x.imag for x in s)
 
-    for r in range(int(mx), int(Mx+1)):
-        for c in range(int(my), int(My+1)):
-            if r+c*1j in s:
+    for r in range(int(mx), int(Mx + 1)):
+        for c in range(int(my), int(My + 1)):
+            if r + c * 1j in s:
                 debug("#", end="")
             else:
                 debug(".", end="")
         debug()
     debug()
+
 
 ####
 
@@ -38,13 +39,13 @@ es = set()
 for ri, r in enumerate(open(0).readlines()):
     for ci, c in enumerate(r):
         if c == "#":
-            es.add(ri+ci*1j)
+            es.add(ri + ci * 1j)
 
 cons = [
-    [-1-1j, -1, -1+1j],  # N
-    [1-1j, 1, 1+1j],  # S
-    [-1-1j, -1j, 1-1j],  # W
-    [-1+1j, 1j, 1+1j]  # E
+    [-1 - 1j, -1, -1 + 1j],  # N
+    [1 - 1j, 1, 1 + 1j],  # S
+    [-1 - 1j, -1j, 1 - 1j],  # W
+    [-1 + 1j, 1j, 1 + 1j],  # E
 ]
 
 round = 0
@@ -57,7 +58,7 @@ while True:
         p = None
         no = 0
         for c1, c2, c3 in cons:
-            n1, n2, n3 = e+c1, e+c2, e+c3
+            n1, n2, n3 = e + c1, e + c2, e + c3
             occ = any(x in es for x in [n1, n2, n3])
             if not occ:
                 no += 1
@@ -78,7 +79,7 @@ while True:
             es.remove(p[0])
             es.add(c)
 
-    cons = cons[1:]+[cons[0]]
+    cons = cons[1:] + [cons[0]]
 
     if round == 10:
         mx = my = float("inf")
@@ -91,9 +92,9 @@ while True:
             My = max(e.imag, My)
 
         t = 0
-        for r in range(int(mx), int(Mx+1)):
-            for c in range(int(my), int(My+1)):
-                if r+c*1j not in es:
+        for r in range(int(mx), int(Mx + 1)):
+            for c in range(int(my), int(My + 1)):
+                if r + c * 1j not in es:
                     t += 1
 
         print(f"p1: {t}")

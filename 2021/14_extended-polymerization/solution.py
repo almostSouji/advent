@@ -1,4 +1,5 @@
 import time
+
 begin = time.time()
 
 ###
@@ -14,16 +15,13 @@ with open("./input.txt", "r") as file:
 
 
 def score(d, template):
-    c = {
-        template[0]: 1,
-        template[-1]: 1
-    }
+    c = {template[0]: 1, template[-1]: 1}
     for k, v in d.items():
         a, b = k
         inc(c, a, v)
         inc(c, b, v)
     for k, v in c.items():
-        c[k] = int(c[k]/2)
+        c[k] = int(c[k] / 2)
 
     vals = list(c.values())
     return max(vals) - min(vals)
@@ -40,7 +38,7 @@ def split(template):
     prev = template[0]
     res = {}
     for e in template[1:]:
-        inc(res, prev+e, 1)
+        inc(res, prev + e, 1)
         prev = e
     return res
 
@@ -49,8 +47,8 @@ def step(c, rules):
     for k, v in list(c.items()):
         a, b = k
         inc(c, k, -v)
-        inc(c, a+rules[k], v)
-        inc(c, rules[k]+b, v)
+        inc(c, a + rules[k], v)
+        inc(c, rules[k] + b, v)
 
 
 def solve1(template, rules):

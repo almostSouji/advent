@@ -14,6 +14,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -36,7 +37,7 @@ def step_h(h_pos, dir):
     h_x, h_y = h_pos
     match dir:
         case "R":
-            return(h_x + 1, h_y)
+            return (h_x + 1, h_y)
         case "L":
             return (h_x - 1, h_y)
         case "U":
@@ -52,7 +53,7 @@ def sign(a):
 def _catchup(positions):
     tail = (0, 0)
     yield tail
-    for (h_x, h_y) in positions:
+    for h_x, h_y in positions:
         t_x, t_y = tail
         d_x, d_y = h_x - t_x, h_y - t_y
         if abs(d_x) <= 1 and abs(d_y) <= 1:
@@ -70,5 +71,20 @@ def _catchup(positions):
 lines = list(_strip(sys.stdin))
 
 print(len(set(_catchup(_move(lines)))))
-print(len(set(_catchup(_catchup(_catchup(_catchup(_catchup(
-    _catchup(_catchup(_catchup(_catchup(_move(lines)))))))))))))
+print(
+    len(
+        set(
+            _catchup(
+                _catchup(
+                    _catchup(
+                        _catchup(
+                            _catchup(
+                                _catchup(_catchup(_catchup(_catchup(_move(lines)))))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

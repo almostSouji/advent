@@ -38,7 +38,7 @@ with open("./input.txt", "r") as file:
     if max_y % 2 != 0:
         max_y += 1
 
-    paper = [[" " for y in range(max_y+1)] for x in range(max_x+1)]
+    paper = [[" " for y in range(max_y + 1)] for x in range(max_x + 1)]
 
     for p in points:
         (x, y) = p
@@ -47,31 +47,33 @@ with open("./input.txt", "r") as file:
 
 def horizontalfold(paper, line):
     r1 = range(line)
-    r2 = range(line+1, len(paper))
+    r2 = range(line + 1, len(paper))
 
-    new_paper = [[" " if paper[j][i] ==
-                  " " else "#" for i in range(len(paper[0]))] for j in r1]
+    new_paper = [
+        [" " if paper[j][i] == " " else "#" for i in range(len(paper[0]))] for j in r1
+    ]
     c = 1
     for i in r2:
         for j in range(len(paper[0])):
             if paper[i][j] == "#":
-                new_paper[line-c][j] = "#"
+                new_paper[line - c][j] = "#"
         c += 1
     return new_paper
 
 
 def verticalfold(paper, line):
     r1 = range(line, -1, -1)
-    r2 = range(line+1, len(paper[0]))
+    r2 = range(line + 1, len(paper[0]))
 
-    new_paper = [[" " if paper[j][i] == " " else "#" for i in r2]
-                 for j in range(len(paper))]
+    new_paper = [
+        [" " if paper[j][i] == " " else "#" for i in r2] for j in range(len(paper))
+    ]
 
     c = 0
     for i in range(len(paper)):
         for j in r1:
             if paper[i][j] == "#":
-                new_paper[i][c-1] = "#"
+                new_paper[i][c - 1] = "#"
             c += 1
         c = 0
     return new_paper

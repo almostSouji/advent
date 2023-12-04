@@ -7,13 +7,14 @@ begin = time.time()
 with open("./input.txt", "r") as file:
     ns = [int(l) for l in file.readline().split(",")]
     r = file.read()
-    boards = [[[(int(c), 0) for c in l.split()]for l in c.strip().split("\n")]
-              for c in r.split("\n\n")]
+    boards = [
+        [[(int(c), 0) for c in l.split()] for l in c.strip().split("\n")]
+        for c in r.split("\n\n")
+    ]
 
 
 def check_board(b):
-    sols = [*b, *[[b[j][i] for j in range(0, len(b))]
-                  for i in range(0, len(b))]]
+    sols = [*b, *[[b[j][i] for j in range(0, len(b))] for i in range(0, len(b))]]
 
     for sol in sols:
         if len([c for c in sol if c[1] == 0]) == 0:
@@ -43,7 +44,7 @@ def solve1():
 
 
 def solve2():
-    tracker = [0]*len(boards)
+    tracker = [0] * len(boards)
     wins = []
     for n in ns:
         for i, b in enumerate(boards):

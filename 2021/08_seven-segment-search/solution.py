@@ -7,7 +7,7 @@ begin = time.time()
 
 def splitter(x):
     (a, b) = x.split("|")
-    return (a.strip().split(" "),  b.strip().split(" "))
+    return (a.strip().split(" "), b.strip().split(" "))
 
 
 with open("./input.txt", "r") as file:
@@ -67,15 +67,15 @@ def solve2(ns):
                     cs[c] = 1
 
         for k, v in cs.items():
-            if (v == 4):
+            if v == 4:
                 m[k] = "e"
-            if (v == 6):
+            if v == 6:
                 m[k] = "b"
-            if (v == 9):
+            if v == 9:
                 m[k] = "f"
-            if (v == 7):
+            if v == 7:
                 m[k] = "d" if k in d[4] else "g"
-            if (v == 8):
+            if v == 8:
                 m[k] = "c" if k in d[1] else "a"
 
         s = ""

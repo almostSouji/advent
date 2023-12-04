@@ -15,6 +15,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -22,7 +23,7 @@ m, d = open(0).read().rstrip().split("\n\n")
 
 ns = list(map(int, re.findall(r"\d+", d)))
 ts = re.findall(r"\D+", d)
-inst = [None]*(len(ns)+len(ts))
+inst = [None] * (len(ns) + len(ts))
 inst[::2] = ns
 inst[1::2] = ts
 
@@ -32,7 +33,7 @@ start = None
 
 for ri, r in enumerate(m.splitlines()):
     for ci, c in enumerate(r):
-        v = ri+1+ci*1j+1j
+        v = ri + 1 + ci * 1j + 1j
         if not start and c != " ":
             start = v
         if c == "#":
@@ -46,12 +47,12 @@ Connections are defined by two portals and if the connection inverts delta to th
 """
 PORTAL_CONNECTIONS = [
     ((51j, -1), (151, -1j), False),  # 2U, 6L
-    ((101j, -1), (201+1j, 1), False),  # 1U, 6D
-    ((1+151j, 1j), (101+101j, 1j), True),  # 1R, 4R
-    ((151+51j, 1), (151+51j, 1j), False),  # 4D, 6R
-    ((1+50j, -1j), (101, -1j), True),  # 2L, 5L
-    ((51+50j, -1j), (100+1j, -1), False),  # 3L, 5U
-    ((51+101j, 1), (51+101j, 1j), False)  # 1D, 3R
+    ((101j, -1), (201 + 1j, 1), False),  # 1U, 6D
+    ((1 + 151j, 1j), (101 + 101j, 1j), True),  # 1R, 4R
+    ((151 + 51j, 1), (151 + 51j, 1j), False),  # 4D, 6R
+    ((1 + 50j, -1j), (101, -1j), True),  # 2L, 5L
+    ((51 + 50j, -1j), (100 + 1j, -1), False),  # 3L, 5U
+    ((51 + 101j, 1), (51 + 101j, 1j), False),  # 1D, 3R
 ]
 
 
@@ -64,7 +65,7 @@ def portal_delta(port, pos, heading):
         if pos.imag in range(int(spawn.imag), int(spawn.imag + 50)):
             return abs(pos.imag - spawn.imag)
     else:
-        if pos.real in range(int(spawn.real), int(spawn.real+50)):
+        if pos.real in range(int(spawn.real), int(spawn.real + 50)):
             return abs(pos.real - spawn.real)
     return -1
 
@@ -161,8 +162,7 @@ def solve(instructions, wrapper):
 
 
 res1 = solve(inst, wrap)
-print(
-    f"part 1: {res1}")
+print(f"part 1: {res1}")
 assert 164014 == res1, res1
 
 res2 = solve(inst, wrap_cube)

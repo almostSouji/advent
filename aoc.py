@@ -34,8 +34,7 @@ def url(year, day, solution, progress, input):
         return f"https://adventofcode.com/{year}/day/{day}"
 
 
-parser = argparse.ArgumentParser(
-    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument(
     "-s", "--solution", help="Submit solution", metavar="<solution>", nargs=1
 )
@@ -49,12 +48,15 @@ parser.add_argument(
     choices=range(2015, 2024),
 )
 parser.add_argument("-p2", "--part2", help="Solve part 2", action="store_true")
-parser.add_argument("-p", "--progress",
-                    help="Show progress table", action="store_true")
+parser.add_argument("-p", "--progress", help="Show progress table", action="store_true")
+parser.add_argument("-i", "--input", help="Pull puzzle input", action="store_true")
 parser.add_argument(
-    "-i", "--input", help="Pull puzzle input", action="store_true")
-parser.add_argument("-c", "--code", type=int, metavar="<codeblock_index>",
-                    help="Pull code block from challenge text (0-indexed)")
+    "-c",
+    "--code",
+    type=int,
+    metavar="<codeblock_index>",
+    help="Pull code block from challenge text (0-indexed)",
+)
 parser.add_argument(
     "-d",
     "--day",
@@ -68,7 +70,7 @@ args = parser.parse_args()
 config = vars(args)
 
 session_key = getenv("USER_SESSION")
-if (session_key == None):
+if session_key == None:
     debug("Missing environment variable value for USER_SESSION!")
     exit(1)
 
@@ -98,8 +100,7 @@ res = (
 )
 
 if res.status_code != 200:
-    debug(
-        f"Failed to fetch {day}/12/{year}. Are you sure that that's correct?")
+    debug(f"Failed to fetch {day}/12/{year}. Are you sure that that's correct?")
     exit(1)
 
 soup = BeautifulSoup(res.text, features="html.parser")
@@ -109,21 +110,26 @@ if inp:
 elif code_block_index != None:
     code_blocks = soup.body.main.find_all("pre")
     max_block = len(code_blocks) - 1
-    if (code_block_index > max_block):
+    if code_block_index > max_block:
         debug(
-            f"Error: Maximum block is #{max_block} trying to request #{code_block_index}.")
+            f"Error: Maximum block is #{max_block} trying to request #{code_block_index}."
+        )
         exit(1)
     else:
         debug(f"Code block #{code_block_index} of {max_block}:")
         print(code_blocks[code_block_index].code.text.strip())
 elif prog:
-    if (soup.pre == None):
-        debug("Cannot Parse response as expected. This might mean the site structure has changed or the configured session key has expired!")
+    if soup.pre == None:
+        debug(
+            "Cannot Parse response as expected. This might mean the site structure has changed or the configured session key has expired!"
+        )
         exit(1)
     print(soup.pre.get_text().strip())
 elif use_answer:
-    if (soup.main == None):
-        debug("Cannot Parse response as expected. This might mean the site structure has changed or the configured session key has expired!")
+    if soup.main == None:
+        debug(
+            "Cannot Parse response as expected. This might mean the site structure has changed or the configured session key has expired!"
+        )
         exit(1)
     print(soup.main.get_text().strip())
 else:

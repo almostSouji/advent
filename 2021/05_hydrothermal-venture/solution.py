@@ -25,20 +25,20 @@ def solve1(ns):
         (fx, fy) = f
         (tx, ty) = t
 
-        if (fx == tx):
+        if fx == tx:
             mi = min(fy, ty)
             ma = max(fy, ty)
-            for i in range(mi, ma+1):
+            for i in range(mi, ma + 1):
                 c = (fx, i)
                 if c in d:
                     d[c] += 1
                 else:
                     d[c] = 1
 
-        elif (fy == ty):
+        elif fy == ty:
             mi = min(fx, tx)
             ma = max(fx, tx)
-            for i in range(mi, ma+1):
+            for i in range(mi, ma + 1):
                 c = (i, fy)
                 if c in d:
                     d[c] += 1
@@ -56,20 +56,20 @@ def solve2(ns):
         (fx, fy) = f
         (tx, ty) = t
 
-        if (fx == tx):
+        if fx == tx:
             mi = min(fy, ty)
             ma = max(fy, ty)
-            for i in range(mi, ma+1):
+            for i in range(mi, ma + 1):
                 c = (fx, i)
                 if c in d:
                     d[c] += 1
                 else:
                     d[c] = 1
 
-        elif (fy == ty):
+        elif fy == ty:
             mi = min(fx, tx)
             ma = max(fx, tx)
-            for i in range(mi, ma+1):
+            for i in range(mi, ma + 1):
                 c = (i, fy)
                 if c in d:
                     d[c] += 1

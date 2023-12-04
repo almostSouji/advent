@@ -3,6 +3,7 @@ import sys
 import pprint
 import time
 
+
 def debug(*args, pretty=False, **kwargs):
     "print() to stderr for debuggin purposes"
     if pretty:
@@ -13,6 +14,7 @@ def debug(*args, pretty=False, **kwargs):
             **kwargs,
             file=sys.stderr,
         )
+
 
 begin = time.time()
 

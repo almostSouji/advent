@@ -9,11 +9,11 @@ with open("./input.txt", "r") as file:
 
 
 def countBits(ns):
-    bc = [(0, 0)]*(len(ns[0]))
+    bc = [(0, 0)] * (len(ns[0]))
 
     for n in ns:
         for i, c in enumerate(n):
-            if c == '0':
+            if c == "0":
                 bc[i] = (bc[i][0] + 1, bc[i][1])
             else:
                 bc[i] = (bc[i][0], bc[i][1] + 1)
@@ -29,11 +29,11 @@ def solve1(ns):
     for b in bc:
         (z, o) = b
         if z > o:
-            g += '0'
-            e += '1'
+            g += "0"
+            e += "1"
         else:
-            g += '1'
-            e += '0'
+            g += "1"
+            e += "0"
 
     gr = int(g, 2)
     er = int(e, 2)
@@ -56,8 +56,8 @@ def getReading(ns, pred):
 
 
 def solve2(ns):
-    oxy = getReading(ns, lambda z, o: '0' if z > o else '1')
-    co2 = getReading(ns, lambda z, o: '0' if z <= o else '1')
+    oxy = getReading(ns, lambda z, o: "0" if z > o else "1")
+    co2 = getReading(ns, lambda z, o: "0" if z <= o else "1")
     return oxy * co2
 
 

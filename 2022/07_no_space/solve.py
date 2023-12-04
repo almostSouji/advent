@@ -15,6 +15,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -47,22 +48,18 @@ for raw_line in sys.stdin:
         case "$", "cd", "..":
             current = current.parent
         case "$", "cd", to:
-            for (i, e) in enumerate(current.children):
+            for i, e in enumerate(current.children):
                 if e.name == to:
                     current = e
         case "$", "ls":
             continue
         case "dir", name:
-            current.children.append(
-                Dir(name, current, [])
-            )
+            current.children.append(Dir(name, current, []))
         case s, name if s.isdigit():
-            current.children.append(
-                File(name, int(s))
-            )
+            current.children.append(File(name, int(s)))
 
 (total_size, sizes) = dir_sizes(root)
 current_space = TOTAL_SPACE - total_size
 
 print(sum([x for x in sizes if x <= MAX_SIZE]))
-print(min([x for x in sizes if current_space+x >= SIZE_UPDATE]))
+print(min([x for x in sizes if current_space + x >= SIZE_UPDATE]))

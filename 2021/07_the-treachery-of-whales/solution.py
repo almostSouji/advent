@@ -18,15 +18,15 @@ def cost(ns, x):
 def cost2(ns, x):
     c = 0
     for n in ns:
-        i = abs(n-x)
-        c += int((i * (i+1)) / 2)
+        i = abs(n - x)
+        c += int((i * (i + 1)) / 2)
     return c
 
 
 def solve1(ns):
     mi = min(ns)
     ma = max(ns)
-    c = [(i, cost(ns, i)) for i in range(mi, ma+1)]
+    c = [(i, cost(ns, i)) for i in range(mi, ma + 1)]
     c.sort(key=lambda x: x[1])
     return c[0][1]
 
@@ -34,7 +34,7 @@ def solve1(ns):
 def solve2(ns):
     mi = min(ns)
     ma = max(ns)
-    c = [(i, cost2(ns, i)) for i in range(mi, ma+1)]
+    c = [(i, cost2(ns, i)) for i in range(mi, ma + 1)]
     c.sort(key=lambda x: x[1])
     return c[0][1]
 

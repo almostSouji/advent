@@ -16,10 +16,11 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
-deltas = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],  [0, 0, 1], [0, 0, -1]]
+deltas = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]]
 cubes = {tuple(map(int, (l.strip().split(",")))) for l in open(0).readlines()}
 
 t = 0
@@ -31,7 +32,7 @@ for c in cubes:
     ns = set()
 
     for xd, yd, zd in deltas:
-        pn = (x+xd, y+yd, z+zd)
+        pn = (x + xd, y + yd, z + zd)
         if pn in cubes:
             ns.add(pn)
         else:
@@ -43,7 +44,7 @@ for c in cubes:
 print(f"part1: {t}")
 
 visited = set()
-q = deque([(mins[0]-1, mins[1]-1, mins[2]-1)])
+q = deque([(mins[0] - 1, mins[1] - 1, mins[2] - 1)])
 q.append(tuple(mins))
 
 t = 0
@@ -53,15 +54,15 @@ while q:
     ns = set()
     if c not in visited:
         for xd, yd, zd in deltas:
-            pn = (x+xd, y+yd, z+zd)
+            pn = (x + xd, y + yd, z + zd)
 
-            if not mins[0]-1 <= pn[0] <= maxs[0]+1:
+            if not mins[0] - 1 <= pn[0] <= maxs[0] + 1:
                 continue
 
-            if not mins[1]-1 <= pn[1] <= maxs[1]+1:
+            if not mins[1] - 1 <= pn[1] <= maxs[1] + 1:
                 continue
 
-            if not mins[2]-1 <= pn[2] <= maxs[2]+1:
+            if not mins[2] - 1 <= pn[2] <= maxs[2] + 1:
                 continue
 
             if pn in cubes:

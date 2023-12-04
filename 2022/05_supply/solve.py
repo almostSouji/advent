@@ -16,6 +16,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -35,16 +36,18 @@ for raw_line in sys.stdin:
     else:
         if len(stacks) == 0:
             t = numpy.transpose(lines)
-            stacks = [[x for x in reversed(
-                line) if x != ' ' and not x.isdigit()] for line in t]
+            stacks = [
+                [x for x in reversed(line) if x != " " and not x.isdigit()]
+                for line in t
+            ]
             stacks2 = [x[:] for x in stacks]
 
         n, fro, to = [int(x) for x in p_moves.findall(raw_line)[0]]
 
         for i in range(n):
-            stacks[to-1].append(stacks[fro-1].pop())
-        stacks2[to-1].extend(stacks2[fro-1][-n:])
-        stacks2[fro-1] = stacks2[fro-1][:-n]
+            stacks[to - 1].append(stacks[fro - 1].pop())
+        stacks2[to - 1].extend(stacks2[fro - 1][-n:])
+        stacks2[fro - 1] = stacks2[fro - 1][:-n]
 
 print("".join([x[-1] for x in stacks]))
 print("".join([x[-1] if len(x) > 0 else "" for x in stacks2]))

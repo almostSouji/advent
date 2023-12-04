@@ -30,7 +30,7 @@ def solve2(ns):
         match n.split():
             case "forward", val:
                 h += int(val)
-                d += (int(val) * a)
+                d += int(val) * a
             case "down", val:
                 a += int(val)
             case "up", val:

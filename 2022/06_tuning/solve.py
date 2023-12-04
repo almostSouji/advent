@@ -14,14 +14,15 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
 def find_marker(buff, window_size):
-    for i in range(window_size+1, len(buff)):
-        chunk = buff[i-window_size-1:i-1]
-        if (len(chunk) == len(set(chunk))):
-            return i-1
+    for i in range(window_size + 1, len(buff)):
+        chunk = buff[i - window_size - 1 : i - 1]
+        if len(chunk) == len(set(chunk)):
+            return i - 1
 
 
 for raw_line in sys.stdin:

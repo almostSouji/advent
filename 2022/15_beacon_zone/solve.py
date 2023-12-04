@@ -15,6 +15,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -33,16 +34,16 @@ maxx = 0
 
 for line in open(0).readlines():
     sx, sy, bx, by = map(int, re.findall(r"-?\d+", line))
-    d = dist(sx+sy*1j, bx+by*1j)
-    q.append((sx+sy*1j, d))
-    beacons.add(bx + by*1j)
+    d = dist(sx + sy * 1j, bx + by * 1j)
+    q.append((sx + sy * 1j, d))
+    beacons.add(bx + by * 1j)
     minx = min(minx, bx - int(d))
     maxx = max(maxx, bx + int(d))
 
 t = 0
 
-for i in range(minx, maxx+1):
-    p = i+scanline*1j
+for i in range(minx, maxx + 1):
+    p = i + scanline * 1j
 
     if p in beacons:
         continue
@@ -54,20 +55,19 @@ for i in range(minx, maxx+1):
 print(t)
 
 N = 4000000
-for y in range(0, N+1):
+for y in range(0, N + 1):
     ranges = []
     for s, d in q:
         diff = abs(s.imag - y)
         if diff > d:
             continue
-        ranges.append((max([s.real - (d-diff), 0]),
-                      min([s.real + (d-diff), N])))
+        ranges.append((max([s.real - (d - diff), 0]), min([s.real + (d - diff), N])))
 
     s = sorted(ranges)
     e = 0
     for le, he in s:
-        if le > e+1:
+        if le > e + 1:
             debug(f"beacon at {(e+1, y)}")
-            print(int((e+1) * 4000000 + y))
+            print(int((e + 1) * 4000000 + y))
             exit(0)
         e = max(e, le, he)

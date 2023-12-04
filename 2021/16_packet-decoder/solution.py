@@ -23,7 +23,7 @@ hex_to_bin = {
     "C": "1100",
     "D": "1101",
     "E": "1110",
-    "F": "1111"
+    "F": "1111",
 }
 
 bin_to_hex = {
@@ -42,18 +42,19 @@ bin_to_hex = {
     "1100": "C",
     "1101": "D",
     "1110": "E",
-    "1111": "F"
+    "1111": "F",
 }
 
 
 def parse_packet_info(p):
     ver = int(p[0:3], 2)
     p_type = int(p[3:6], 2)
-    return(ver, p_type)
+    return (ver, p_type)
 
 
 # packet: (version, type, packets, value)
 # parse: (bits, pointer, packet)
+
 
 def parse(bits, pointer, parent):
     (v, t) = parse_packet_info(bits[pointer:])
@@ -65,27 +66,27 @@ def parse(bits, pointer, parent):
             # literal
             res = ""
             for i in range(pointer, len(bits), 5):
-                chunk = bits[i:i+5]
+                chunk = bits[i : i + 5]
                 last = False if chunk[0] == "1" else True
                 res += chunk[1:]
                 if last:
                     new_node = (v, t, [], int(res, 2))
-                    if (len(parent) > 0):
+                    if len(parent) > 0:
                         parent[2].append(new_node)
                         return parent
                     else:
-                        return (new_node)
+                        return new_node
         case _:
             mode = bits[pointer]
             pointer += 1
             match mode:
                 case "0":
                     # 15 bits -> length in bits
-                    l_subp = int(bits[pointer:pointer+16], 2)
+                    l_subp = int(bits[pointer : pointer + 16], 2)
                     pointer += 15
                 case "1":
                     # 11 bits -> number of subpackets immediately contained
-                    n_subp = int(bits[pointer:pointer+12], 2)
+                    n_subp = int(bits[pointer : pointer + 12], 2)
                     pointer += 11
                     n = 0
                     new_node = (v, t, [], 0)

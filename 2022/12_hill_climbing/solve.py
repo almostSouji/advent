@@ -15,6 +15,7 @@ def debug(*args, pretty=False, **kwargs):
             file=sys.stderr,
         )
 
+
 ####
 
 
@@ -23,8 +24,11 @@ l = list(map(lambda x: x.strip(), open(0).readlines()))
 
 def can_visit(a, b):
     a = l[int(a.real)][int(a.imag)]
-    b = l[int(b.real)][int(b.imag)] if b.real in range(
-        len(l)) and b.imag in range(len(l[0])) else None
+    b = (
+        l[int(b.real)][int(b.imag)]
+        if b.real in range(len(l)) and b.imag in range(len(l[0]))
+        else None
+    )
 
     if b == None:
         return False
@@ -40,17 +44,17 @@ start, end, starts = None, None, []
 for ri, r in enumerate(l):
     for ci, c in enumerate(r):
         curr = complex(ri, ci)
-        if can_visit(curr, curr+1):
-            g.setdefault(curr, []).append(curr+1)
+        if can_visit(curr, curr + 1):
+            g.setdefault(curr, []).append(curr + 1)
 
-        if can_visit(curr, curr-1):
-            g.setdefault(curr, []).append(curr-1)
+        if can_visit(curr, curr - 1):
+            g.setdefault(curr, []).append(curr - 1)
 
-        if can_visit(curr, curr+1j):
-            g.setdefault(curr, []).append(curr+1j)
+        if can_visit(curr, curr + 1j):
+            g.setdefault(curr, []).append(curr + 1j)
 
-        if can_visit(curr, curr-1j):
-            g.setdefault(curr, []).append(curr-1j)
+        if can_visit(curr, curr - 1j):
+            g.setdefault(curr, []).append(curr - 1j)
 
         if c == "S":
             start = curr

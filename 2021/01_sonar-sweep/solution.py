@@ -9,7 +9,7 @@ with open("./input.txt", "r") as file:
 
 
 def solve1(ns):
-    prev = float('inf')
+    prev = float("inf")
     c = 0
     for n in ns:
         if n > prev:
@@ -20,11 +20,11 @@ def solve1(ns):
 
 def solve2(ns):
     i = 0
-    prev = float('inf')
+    prev = float("inf")
     c = 0
     for i in range(len(ns) - 3 + 1):
-        s = ns[i] + ns[i+1] + ns[i+2]
-        if (s > prev):
+        s = ns[i] + ns[i + 1] + ns[i + 2]
+        if s > prev:
             c += 1
         prev = s
     return c
