@@ -17,34 +17,30 @@ def debug(*args, pretty=False, **kwargs):
 
 ####
 
-sds = None
-conv = []
-
+seeds = None
 for block in open(0).read().split("\n\n"):
-    if not sds:
-        sds = [int(x) for x in block.split()[1::]]
+    if not seeds:
+        seeds = [int(x) for x in block.split()[1::]]
         continue
 
-    ranges = []
+    rs = []
     for line in block.split("\n")[1::]:
-        drs, srs, rl = [int(x) for x in line.split()]
+        dest_start, src_start, range_len = [int(x) for x in line.split()]
+        rs.append((dest_start, src_start, range_len))
 
-        ranges.append((drs, srs, rl))
-    conv.append(ranges)
+    converted = []
+    for seed in seeds:
+        for r in rs:
+            dest_start, src_start, range_len = r
 
-
-locs = []
-for s in sds:
-    v = s
-    for c in conv:
-        for range in c:
-            drs, srs, rl = range
-            if srs <= v < srs + rl:
-                v = drs + (v - srs)
+            if src_start <= seed < src_start + range_len:
+                converted.append(dest_start + (seed - src_start))
                 break
         else:
-            v = v
-    locs.append(v)
+            converted.append(seed)
+    seeds = converted
 
-s = min(locs)
+s = min(seeds)
 print(s)
+
+assert s == 510109797, s
