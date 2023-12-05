@@ -17,34 +17,26 @@ def debug(*args, pretty=False, **kwargs):
 
 ####
 
-cards = dict()
-todo = []
+count = dict()
 
 s = 0
 for i, line in enumerate(open(0)):
-    i = i + 1
     _wnstr, nstr = line.strip().split(" | ")
     wns = [int(x) for x in _wnstr.split()[2::]]
     ns = [int(x) for x in nstr.split()]
     matches = [x for x in ns if x in wns]
 
     nm = len(matches)
-    score = 2 ** (nm - 1) if nm > 0 else 0
-    s += score
+    s += 2 ** (nm - 1) if nm > 0 else 0
 
-    c = (i, nm, score)
-    cards[i] = c
-    todo.append(c)
+    count[i] = count.get(i, 1)
+
+    for j in range(i + 1, i + nm + 1):
+        count[j] = count.get(j, 1) + count[i]
 
 print(s)
 
-for c in todo:
-    i, nm, score = c
-
-    for j in range(i + 1, i + nm + 1):
-        todo.append(cards[j])
-
-s2 = len(todo)
+s2 = sum(count.values())
 print(s2)
 
 assert s == 19855, s
