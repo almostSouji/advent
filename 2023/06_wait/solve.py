@@ -18,8 +18,10 @@ def debug(*args, pretty=False, **kwargs):
 ####
 
 lines = []
+race = []
 for line in open(0).readlines():
     lines.append([int(x) for x in line.split()[1::]])
+    race.append(int("".join(line.split()[1::])))
 
 races = list(zip(*lines))
 
@@ -36,3 +38,22 @@ for t, d in races:
     s *= wins
 
 print(s)
+
+s2 = 0
+t, d = race
+for h in range(1, t):
+    sp = t - h
+    dist = sp * h
+    if dist > d:
+        # iterating to the minimum
+        # h is the minimum time that wins
+        # everything up to race time - the minimum time we need to win also wins
+        # time - min + 1 (inclusive)
+        # max - min
+        s2 = t - h + 1 - h
+        break
+
+print(s2)
+
+assert s == 608902, s
+assert s2 == 46173809, s2
