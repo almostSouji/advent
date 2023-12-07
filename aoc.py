@@ -117,7 +117,7 @@ elif code_block_index != None:
         exit(1)
     else:
         debug(f"Code block #{code_block_index} of {max_block}:")
-        print(code_blocks[code_block_index].code.text.strip())
+        print(code_blocks[code_block_index].code.text.strip(), end="")
 elif prog:
     if soup.pre == None:
         debug(
