@@ -32,29 +32,10 @@ def score_hand(cards, joker=False):
     if joker and len(vals):
         vals[0] += jokers
 
-    if joker and jokers == 5:  # Five of a kind (all jokers)
-        return 7
+    if joker and jokers == 5:
+        return [5]
 
-    elif vals[0] == 5:  # Five of a kind
-        return 7
-
-    elif vals[0] == 4:  # Four of a kind
-        return 6
-
-    elif vals[0] == 3 and vals[1] == 2:  # Full house
-        return 5
-
-    elif vals[0] == 3:  # Three of a kind
-        return 4
-
-    elif vals[0] == 2 and vals[1] == 2:  # Two pair
-        return 3
-
-    elif vals[0] == 2:  # One pair
-        return 2
-
-    else:  # High card
-        return 1
+    return vals
 
 
 def card_strength(card, joker=False):
@@ -85,7 +66,6 @@ for line in open(0):
 
 hands.sort(key=sort, reverse=True)
 hands2.sort(key=lambda x: sort(x, joker=True), reverse=True)
-
 
 s = evaluate_hands(hands)
 print(s)
