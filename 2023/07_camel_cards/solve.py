@@ -69,24 +69,8 @@ def card_strength(card, joker=False):
     return alphabet2.index(card) if joker else alphabet.index(card)
 
 
-def sort(a, b, joker=False):
-    a_cards, a_score, _ = a
-    b_cards, b_score, _ = b
-
-    if a_score > b_score:
-        return 1
-    elif a_score < b_score:
-        return -1
-    else:
-        for i, c in enumerate(a_cards):
-            a_s = card_strength(c, joker)
-            b_s = card_strength(b_cards[i], joker)
-
-            if a_s > b_s:
-                return 1
-            if a_s < b_s:
-                return -1
-        return 0
+def sort(val, joker=False):
+    return (val[1], [card_strength(x, joker) for x in val[0]])
 
 
 def evaluate_hands(hands):
@@ -107,8 +91,8 @@ for line in open(0):
     hands2.append((cards, score_hand(cards, joker=True), bid))
 
 
-hands.sort(key=cmp_to_key(sort), reverse=True)
-hands2.sort(key=cmp_to_key(lambda a, b: sort(a, b, joker=True)), reverse=True)
+hands.sort(key=sort, reverse=True)
+hands2.sort(key=lambda x: sort(x, joker=True), reverse=True)
 
 
 s = evaluate_hands(hands)
