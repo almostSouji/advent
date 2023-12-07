@@ -25,17 +25,9 @@ alphabet2.reverse()
 
 
 def score_hand(cards, joker=False):
-    counter = {}
-    for card in cards:
-        counter[card] = counter.get(card, 0) + 1
-    jokers = counter.get("J", 0)
-
-    vals = (
-        [x[1] for x in counter.items() if x[0] != "J"]
-        if joker
-        else list(counter.values())
-    )
+    vals = [cards.count(x) for x in set(cards) if (x != "J" if joker else True)]
     vals.sort(reverse=True)
+    jokers = cards.count("J")
 
     if joker and len(vals):
         vals[0] += jokers
