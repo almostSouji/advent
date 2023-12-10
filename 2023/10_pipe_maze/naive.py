@@ -80,25 +80,40 @@ for elem in [lace[-1] - start, lace[1] - start]:
 start_shape = candidates.pop()
 m[start] = start_shape
 
-# shoelace algorithm https://www.101computing.net/the-shoelace-algorithm/
+# clean up the maze to not have to deal with weird pipes
+for a in range(x + 1):
+    for b in range(y + 1):
+        coord = a + 1j * b
+        if coord not in lace:
+            m[coord] = "."
 
-sum1 = 0
-sum2 = 0
-for a, b in zip(lace, lace[1:]):
-    sum1 += a.real * b.imag
-    sum2 += a.imag * b.real
-sum1 += lace[-1].real * lace[0].imag
-sum2 += lace[-1].imag * lace[0].real
-area = abs(sum1 - sum2) / 2
+# find the tiles outside the maze
+outcoords = set()
+for a in range(x + 1):
+    inside = False
+    seenL = None
+    for b in range(y + 1):
+        assert a + 1j * b in m
+        c = m[a + 1j * b]
 
-# picks theorem https://en.wikipedia.org/wiki/Pick%27s_theorem
-# A = i + R/2 - 1
-# A := total area
-# i := number of internal points
-# R := number of points on the boundary
-# => i = A - R/2 + 1
+        if c == "|":
+            assert seenL is None
+            inside = not inside
+        elif c in "LF":
+            assert seenL is None, (a, b, c, seenL)
+            seenL = c == "L"
+        elif c in "J7":
+            assert seenL is not None
+            if (seenL and c == "7") or (not seenL and c == "J"):
+                inside = not inside
+            seenL = None
 
-s2 = int(area - len(lace) / 2 + 1)
+        coord = a + 1j * b
+        if not inside:
+            outcoords.add(coord)
+
+# remove the outside tiles and the lace tiles from all tiles to find the surrounded tiles
+s2 = len(set(m.keys()) - outcoords - set(lace))
 
 print(s)
 print(s2)
