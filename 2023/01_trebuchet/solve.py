@@ -1,21 +1,4 @@
 #!/usr/bin/env python3
-import sys
-import pprint
-
-
-def debug(*args, pretty=False, **kwargs):
-    "print() to stderr for debuggin purposes"
-    if pretty:
-        pprint.pprint(*args, **kwargs, stream=sys.stderr)
-    else:
-        print(
-            *args,
-            **kwargs,
-            file=sys.stderr,
-        )
-
-
-####
 
 numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 numbers_rev = [word[::-1] for word in numbers]
