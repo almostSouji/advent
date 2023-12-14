@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-from icecream import ic
-
 grid = [list(x) for x in open(0).read().splitlines()]
 
 
@@ -37,29 +35,39 @@ def turn(grid):
 
 
 def score(grid):
-    return sum(
-        [sum([len(line) - i for i, c in enumerate(line) if c == "O"]) for line in grid]
-    )
+    return sum([line.count("O") * (len(grid) - i) for i, line in enumerate(grid)])
 
 
 c = transpose([line.copy() for line in grid])
 sort_grid(c)
+c = transpose(c)
 s = score(c)
 
 m = dict()
+states = []
 
-for i in range(10):
+N = 1000000000
+cycle = (-1, -1)
+for i in range(N):
     grid = turn(grid)
     hash = h(grid)
     if hash in m:
-        ic(i)
+        cycle = (m[hash], i)
+        print(cycle)
         break
     else:
         m[hash] = i
-    ic(grid)
+    states.append(hash)
 
-ic(h(grid))
+first, repeated = cycle
 
-assert s == 136, s
-exit(0)
+final_i = (N - first) % (repeated - first) + first - 1
+grid = states[final_i]
+
+s2 = score(grid)
+
+print(s)
+print(s2)
+
 assert s == 106990, s
+assert s2 == 100531, s2
