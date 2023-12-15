@@ -6,3 +6,5 @@ obj
 __pycache__
 template_*/
 .env
+*.txt
+*.md
