@@ -1,5 +1,5 @@
 start = -1
-splitters = set()
+splitters: set[tuple[int, int]] = set()
 
 visited_lines = 0
 visited_cols = 0
@@ -14,21 +14,30 @@ for line_index, line in enumerate(open(0)):
             splitters.add((line_index, col_index))
 
 
-beams: set[int] = set([start])
+beams_d: dict[int, int] = dict()
+beams_d[start] = 1
 
 
 p1 = 0
 for i in range(1, visited_lines):
-    rem = set()
-    add = set()
-    for beam in beams:
+    rem: list[int] = []
+    add: list[tuple[int, int]] = []
+    for beam, paths in beams_d.items():
         check = (i, beam)
         if check in splitters:
             p1 += 1
-            rem.add(beam)
-            add.add(beam - 1)
-            add.add(beam + 1)
-    beams.update(add)
-    beams.difference_update(rem)
+            rem.append(beam)
+            add.append((beam - 1, paths))
+            add.append((beam + 1, paths))
+
+    for r in rem:
+        del beams_d[r]
+
+    for add_beam, paths in add:
+        current = beams_d.get(add_beam, 0)
+        beams_d[add_beam] = current + paths
+
+p2 = sum(beams_d.values())
 
 print(f"part1: {p1}")
+print(f"part2: {p2}")
