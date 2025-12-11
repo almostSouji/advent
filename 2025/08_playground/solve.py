@@ -1,4 +1,8 @@
-from icecream import ic
+"""
+concept: DSU
+https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+"""
 
 boxes = []
 for line in open(0).readlines():
@@ -29,18 +33,25 @@ def merge(one, other):
 
 
 distances.sort()
-for _dist, one, other in distances[:1000]:
-    merge(one, other)
 
-sizes = dict()
+made_connections = 0
+for i, (_dist, one, other) in enumerate(distances):
+    if i == 1000:
+        counts = dict()
+        for box in boxes:
+            box_root = find(box)
+            root_size = counts.get(box_root, 0)
+            counts[box_root] = root_size + 1
 
-for box in boxes:
-    box_root = find(box)
-    root_size = sizes.get(box_root, 0)
-    sizes[box_root] = root_size + 1
+        sol1, sol2, sol3, *_rest = sorted(counts.values(), reverse=True)
+        print(f"part1: {sol1 * sol2 * sol3}")
 
-sol1, sol2, sol3, *_rest = sorted(sizes.values(), reverse=True)
+    root_one = find(one)
+    root_other = find(other)
 
-p1 = sol1 * sol2 * sol3
-
-print(f"part1: {p1}")
+    if root_one != root_other:
+        merge(one, other)
+        made_connections += 1
+        if made_connections >= len(boxes) - 1:
+            print(f"part2: {one[0] * other[0]}")
+            break
